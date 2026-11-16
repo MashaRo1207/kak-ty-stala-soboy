@@ -1131,7 +1131,7 @@ function render(){
    <p>${a.text}</p>
    <div class="box lilac"><div class="label">${op?"Как Аня поступает, когда у неё есть силы":"Что Аня делает автоматически"}</div><p>${v[0]}</p></div>
    <p class="muted small center" style="margin-top:2px">Что выберешь?</p>
-   <div class="row${op?" wide":""}">${op?`<button class="ghost" data-a="old">Что будет дальше</button><button class="btn" data-a="new">А если Аня сорвётся?</button>`:`<button class="ghost" data-a="old">Привычный способ</button><button class="btn" data-a="new">Новый способ</button>`}</div>
+   <div class="row"><button class="ghost" data-a="old">Привычный способ</button><button class="btn" data-a="new">Новый способ</button></div>
   </div>`;
  }
  else if(S.screen==="adultReveal"){
