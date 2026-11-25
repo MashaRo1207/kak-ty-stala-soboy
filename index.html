@@ -152,6 +152,18 @@ a:has(.nick){text-decoration:none}
 .lk:active{transform:scale(.98)}
 .lk small{font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
 .lk .nick{color:var(--deeper)}
+
+.eyerow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.heart{background:none;border:1.3px solid #C9CFBD;border-radius:20px;padding:5px 11px;font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;white-space:nowrap;transition:background .15s}
+.heart i{font-style:normal;font-size:15px;line-height:1}
+.heart.on{background:var(--pink);border-color:var(--pink);color:var(--ink)}
+.heart.on i{color:#C2566A}
+.feels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feel{background:#fff;border:1.5px solid var(--ink);border-radius:30px;padding:11px 10px;font-size:15px;box-shadow:2px 2px 0 rgba(0,0,0,.1);transition:background .15s}
+.feel:hover{background:var(--lime)}.feel.on{background:var(--deep);border-color:var(--deep);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.declist{margin:6px 0 0;padding-left:18px}.declist li{margin:5px 0}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.fchips span{background:#fff;border-radius:14px;padding:3px 10px;font-size:13px}
 </style>
 <div id="app"></div>
 <script>var rough=function(){"use strict";function t(t,e,s){if(t&&t.length){const[n,o]=e,a=Math.PI/180*s,h=Math.cos(a),r=Math.sin(a);for(const e of t){const[t,s]=e;e[0]=(t-n)*h-(s-o)*r+n,e[1]=(t-n)*r+(s-o)*h+o}}}function e(t,e){return t[0]===e[0]&&t[1]===e[1]}function s(s,n,o,a=1){const h=o,r=Math.max(n,.1),i=s[0]&&s[0][0]&&"number"==typeof s[0][0]?[s]:s,c=[0,0];if(h)for(const e of i)t(e,c,h);const l=function(t,s,n){const o=[];for(const s of t){const t=[...s];e(t[0],t[t.length-1])||t.push([t[0][0],t[0][1]]),t.length>2&&o.push(t)}const a=[];s=Math.max(s,.1);const h=[];for(const t of o)for(let e=0;e<t.length-1;e++){const s=t[e],n=t[e+1];if(s[1]!==n[1]){const t=Math.min(s[1],n[1]);h.push({ymin:t,ymax:Math.max(s[1],n[1]),x:t===s[1]?s[0]:n[0],islope:(n[0]-s[0])/(n[1]-s[1])})}}if(h.sort(((t,e)=>t.ymin<e.ymin?-1:t.ymin>e.ymin?1:t.x<e.x?-1:t.x>e.x?1:t.ymax===e.ymax?0:(t.ymax-e.ymax)/Math.abs(t.ymax-e.ymax))),!h.length)return a;let r=[],i=h[0].ymin,c=0;for(;r.length||h.length;){if(h.length){let t=-1;for(let e=0;e<h.length&&!(h[e].ymin>i);e++)t=e;h.splice(0,t+1).forEach((t=>{r.push({s:i,edge:t})}))}if(r=r.filter((t=>!(t.edge.ymax<=i))),r.sort(((t,e)=>t.edge.x===e.edge.x?0:(t.edge.x-e.edge.x)/Math.abs(t.edge.x-e.edge.x))),(1!==n||c%s==0)&&r.length>1)for(let t=0;t<r.length;t+=2){const e=t+1;if(e>=r.length)break;const s=r[t].edge,n=r[e].edge;a.push([[Math.round(s.x),i],[Math.round(n.x),i]])}i+=n,r.forEach((t=>{t.edge.x=t.edge.x+n*t.edge.islope})),c++}return a}(i,r,a);if(h){for(const e of i)t(e,c,-h);!function(e,s,n){const o=[];e.forEach((t=>o.push(...t))),t(o,s,n)}(l,c,-h)}return l}function n(t,e){var n;const o=e.hachureAngle+90;let a=e.hachureGap;a<0&&(a=4*e.strokeWidth),a=Math.round(Math.max(a,.1));let h=1;return e.roughness>=1&&((null===(n=e.randomizer)||void 0===n?void 0:n.next())||Math.random())>.7&&(h=a),s(t,a,o,h||1)}class o{constructor(t){this.helper=t}fillPolygons(t,e){return this._fillPolygons(t,e)}_fillPolygons(t,e){const s=n(t,e);return{type:"fillSketch",ops:this.renderLines(s,e)}}renderLines(t,e){const s=[];for(const n of t)s.push(...this.helper.doubleLineOps(n[0][0],n[0][1],n[1][0],n[1][1],e));return s}}function a(t){const e=t[0],s=t[1];return Math.sqrt(Math.pow(e[0]-s[0],2)+Math.pow(e[1]-s[1],2))}class h extends o{fillPolygons(t,e){let s=e.hachureGap;s<0&&(s=4*e.strokeWidth),s=Math.max(s,.1);const o=n(t,Object.assign({},e,{hachureGap:s})),h=Math.PI/180*e.hachureAngle,r=[],i=.5*s*Math.cos(h),c=.5*s*Math.sin(h);for(const[t,e]of o)a([t,e])&&r.push([[t[0]-i,t[1]+c],[...e]],[[t[0]+i,t[1]-c],[...e]]);return{type:"fillSketch",ops:this.renderLines(r,e)}}}class r extends o{fillPolygons(t,e){const s=this._fillPolygons(t,e),n=Object.assign({},e,{hachureAngle:e.hachureAngle+90}),o=this._fillPolygons(t,n);return s.ops=s.ops.concat(o.ops),s}}class i{constructor(t){this.helper=t}fillPolygons(t,e){const s=n(t,e=Object.assign({},e,{hachureAngle:0}));return this.dotsOnLines(s,e)}dotsOnLines(t,e){const s=[];let n=e.hachureGap;n<0&&(n=4*e.strokeWidth),n=Math.max(n,.1);let o=e.fillWeight;o<0&&(o=e.strokeWidth/2);const h=n/4;for(const r of t){const t=a(r),i=t/n,c=Math.ceil(i)-1,l=t-c*n,u=(r[0][0]+r[1][0])/2-n/4,p=Math.min(r[0][1],r[1][1]);for(let t=0;t<c;t++){const a=p+l+t*n,r=u-h+2*Math.random()*h,i=a-h+2*Math.random()*h,c=this.helper.ellipse(r,i,o,o,e);s.push(...c.ops)}}return{type:"fillSketch",ops:s}}}class c{constructor(t){this.helper=t}fillPolygons(t,e){const s=n(t,e);return{type:"fillSketch",ops:this.dashedLine(s,e)}}dashedLine(t,e){const s=e.dashOffset<0?e.hachureGap<0?4*e.strokeWidth:e.hachureGap:e.dashOffset,n=e.dashGap<0?e.hachureGap<0?4*e.strokeWidth:e.hachureGap:e.dashGap,o=[];return t.forEach((t=>{const h=a(t),r=Math.floor(h/(s+n)),i=(h+n-r*(s+n))/2;let c=t[0],l=t[1];c[0]>l[0]&&(c=t[1],l=t[0]);const u=Math.atan((l[1]-c[1])/(l[0]-c[0]));for(let t=0;t<r;t++){const a=t*(s+n),h=a+s,r=[c[0]+a*Math.cos(u)+i*Math.cos(u),c[1]+a*Math.sin(u)+i*Math.sin(u)],l=[c[0]+h*Math.cos(u)+i*Math.cos(u),c[1]+h*Math.sin(u)+i*Math.sin(u)];o.push(...this.helper.doubleLineOps(r[0],r[1],l[0],l[1],e))}})),o}}class l{constructor(t){this.helper=t}fillPolygons(t,e){const s=e.hachureGap<0?4*e.strokeWidth:e.hachureGap,o=e.zigzagOffset<0?s:e.zigzagOffset,a=n(t,e=Object.assign({},e,{hachureGap:s+o}));return{type:"fillSketch",ops:this.zigzagLines(a,o,e)}}zigzagLines(t,e,s){const n=[];return t.forEach((t=>{const o=a(t),h=Math.round(o/(2*e));let r=t[0],i=t[1];r[0]>i[0]&&(r=t[1],i=t[0]);const c=Math.atan((i[1]-r[1])/(i[0]-r[0]));for(let t=0;t<h;t++){const o=2*t*e,a=2*(t+1)*e,h=Math.sqrt(2*Math.pow(e,2)),i=[r[0]+o*Math.cos(c),r[1]+o*Math.sin(c)],l=[r[0]+a*Math.cos(c),r[1]+a*Math.sin(c)],u=[i[0]+h*Math.cos(c+Math.PI/4),i[1]+h*Math.sin(c+Math.PI/4)];n.push(...this.helper.doubleLineOps(i[0],i[1],u[0],u[1],s),...this.helper.doubleLineOps(u[0],u[1],l[0],l[1],s))}})),n}}const u={};class p{constructor(t){this.seed=t}next(){return this.seed?(2**31-1&(this.seed=Math.imul(48271,this.seed)))/2**31:Math.random()}}const f=0,d=1,g=2,M={A:7,a:7,C:6,c:6,H:1,h:1,L:2,l:2,M:2,m:2,Q:4,q:4,S:4,s:4,T:2,t:2,V:1,v:1,Z:0,z:0};function k(t,e){return t.type===e}function b(t){const e=[],s=function(t){const e=new Array;for(;""!==t;)if(t.match(/^([ \t\r\n,]+)/))t=t.substr(RegExp.$1.length);else if(t.match(/^([aAcChHlLmMqQsStTvVzZ])/))e[e.length]={type:f,text:RegExp.$1},t=t.substr(RegExp.$1.length);else{if(!t.match(/^(([-+]?[0-9]+(\.[0-9]*)?|[-+]?\.[0-9]+)([eE][-+]?[0-9]+)?)/))return[];e[e.length]={type:d,text:`${parseFloat(RegExp.$1)}`},t=t.substr(RegExp.$1.length)}return e[e.length]={type:g,text:""},e}(t);let n="BOD",o=0,a=s[o];for(;!k(a,g);){let h=0;const r=[];if("BOD"===n){if("M"!==a.text&&"m"!==a.text)return b("M0,0"+t);o++,h=M[a.text],n=a.text}else k(a,d)?h=M[n]:(o++,h=M[a.text],n=a.text);if(!(o+h<s.length))throw new Error("Path data ended short");for(let t=o;t<o+h;t++){const e=s[t];if(!k(e,d))throw new Error("Param not a number: "+n+","+e.text);r[r.length]=+e.text}if("number"!=typeof M[n])throw new Error("Bad segment: "+n);{const t={key:n,data:r};e.push(t),o+=h,a=s[o],"M"===n&&(n="L"),"m"===n&&(n="l")}}return e}function y(t){let e=0,s=0,n=0,o=0;const a=[];for(const{key:h,data:r}of t)switch(h){case"M":a.push({key:"M",data:[...r]}),[e,s]=r,[n,o]=r;break;case"m":e+=r[0],s+=r[1],a.push({key:"M",data:[e,s]}),n=e,o=s;break;case"L":a.push({key:"L",data:[...r]}),[e,s]=r;break;case"l":e+=r[0],s+=r[1],a.push({key:"L",data:[e,s]});break;case"C":a.push({key:"C",data:[...r]}),e=r[4],s=r[5];break;case"c":{const t=r.map(((t,n)=>n%2?t+s:t+e));a.push({key:"C",data:t}),e=t[4],s=t[5];break}case"Q":a.push({key:"Q",data:[...r]}),e=r[2],s=r[3];break;case"q":{const t=r.map(((t,n)=>n%2?t+s:t+e));a.push({key:"Q",data:t}),e=t[2],s=t[3];break}case"A":a.push({key:"A",data:[...r]}),e=r[5],s=r[6];break;case"a":e+=r[5],s+=r[6],a.push({key:"A",data:[r[0],r[1],r[2],r[3],r[4],e,s]});break;case"H":a.push({key:"H",data:[...r]}),e=r[0];break;case"h":e+=r[0],a.push({key:"H",data:[e]});break;case"V":a.push({key:"V",data:[...r]}),s=r[0];break;case"v":s+=r[0],a.push({key:"V",data:[s]});break;case"S":a.push({key:"S",data:[...r]}),e=r[2],s=r[3];break;case"s":{const t=r.map(((t,n)=>n%2?t+s:t+e));a.push({key:"S",data:t}),e=t[2],s=t[3];break}case"T":a.push({key:"T",data:[...r]}),e=r[0],s=r[1];break;case"t":e+=r[0],s+=r[1],a.push({key:"T",data:[e,s]});break;case"Z":case"z":a.push({key:"Z",data:[]}),e=n,s=o}return a}function m(t){const e=[];let s="",n=0,o=0,a=0,h=0,r=0,i=0;for(const{key:c,data:l}of t){switch(c){case"M":e.push({key:"M",data:[...l]}),[n,o]=l,[a,h]=l;break;case"C":e.push({key:"C",data:[...l]}),n=l[4],o=l[5],r=l[2],i=l[3];break;case"L":e.push({key:"L",data:[...l]}),[n,o]=l;break;case"H":n=l[0],e.push({key:"L",data:[n,o]});break;case"V":o=l[0],e.push({key:"L",data:[n,o]});break;case"S":{let t=0,a=0;"C"===s||"S"===s?(t=n+(n-r),a=o+(o-i)):(t=n,a=o),e.push({key:"C",data:[t,a,...l]}),r=l[0],i=l[1],n=l[2],o=l[3];break}case"T":{const[t,a]=l;let h=0,c=0;"Q"===s||"T"===s?(h=n+(n-r),c=o+(o-i)):(h=n,c=o);const u=n+2*(h-n)/3,p=o+2*(c-o)/3,f=t+2*(h-t)/3,d=a+2*(c-a)/3;e.push({key:"C",data:[u,p,f,d,t,a]}),r=h,i=c,n=t,o=a;break}case"Q":{const[t,s,a,h]=l,c=n+2*(t-n)/3,u=o+2*(s-o)/3,p=a+2*(t-a)/3,f=h+2*(s-h)/3;e.push({key:"C",data:[c,u,p,f,a,h]}),r=t,i=s,n=a,o=h;break}case"A":{const t=Math.abs(l[0]),s=Math.abs(l[1]),a=l[2],h=l[3],r=l[4],i=l[5],c=l[6];if(0===t||0===s)e.push({key:"C",data:[n,o,i,c,i,c]}),n=i,o=c;else if(n!==i||o!==c){x(n,o,i,c,t,s,a,h,r).forEach((function(t){e.push({key:"C",data:t})})),n=i,o=c}break}case"Z":e.push({key:"Z",data:[]}),n=a,o=h}s=c}return e}function w(t,e,s){return[t*Math.cos(s)-e*Math.sin(s),t*Math.sin(s)+e*Math.cos(s)]}function x(t,e,s,n,o,a,h,r,i,c){const l=(u=h,Math.PI*u/180);var u;let p=[],f=0,d=0,g=0,M=0;if(c)[f,d,g,M]=c;else{[t,e]=w(t,e,-l),[s,n]=w(s,n,-l);const h=(t-s)/2,c=(e-n)/2;let u=h*h/(o*o)+c*c/(a*a);u>1&&(u=Math.sqrt(u),o*=u,a*=u);const p=o*o,k=a*a,b=p*k-p*c*c-k*h*h,y=p*c*c+k*h*h,m=(r===i?-1:1)*Math.sqrt(Math.abs(b/y));g=m*o*c/a+(t+s)/2,M=m*-a*h/o+(e+n)/2,f=Math.asin(parseFloat(((e-M)/a).toFixed(9))),d=Math.asin(parseFloat(((n-M)/a).toFixed(9))),t<g&&(f=Math.PI-f),s<g&&(d=Math.PI-d),f<0&&(f=2*Math.PI+f),d<0&&(d=2*Math.PI+d),i&&f>d&&(f-=2*Math.PI),!i&&d>f&&(d-=2*Math.PI)}let k=d-f;if(Math.abs(k)>120*Math.PI/180){const t=d,e=s,r=n;d=i&&d>f?f+120*Math.PI/180*1:f+120*Math.PI/180*-1,p=x(s=g+o*Math.cos(d),n=M+a*Math.sin(d),e,r,o,a,h,0,i,[d,t,g,M])}k=d-f;const b=Math.cos(f),y=Math.sin(f),m=Math.cos(d),P=Math.sin(d),v=Math.tan(k/4),S=4/3*o*v,O=4/3*a*v,L=[t,e],T=[t+S*y,e-O*b],D=[s+S*P,n-O*m],A=[s,n];if(T[0]=2*L[0]-T[0],T[1]=2*L[1]-T[1],c)return[T,D,A].concat(p);{p=[T,D,A].concat(p);const t=[];for(let e=0;e<p.length;e+=3){const s=w(p[e][0],p[e][1],l),n=w(p[e+1][0],p[e+1][1],l),o=w(p[e+2][0],p[e+2][1],l);t.push([s[0],s[1],n[0],n[1],o[0],o[1]])}return t}}const P={randOffset:function(t,e){return G(t,e)},randOffsetWithRange:function(t,e,s){return E(t,e,s)},ellipse:function(t,e,s,n,o){const a=T(s,n,o);return D(t,e,o,a).opset},doubleLineOps:function(t,e,s,n,o){return $(t,e,s,n,o,!0)}};function v(t,e,s,n,o){return{type:"path",ops:$(t,e,s,n,o)}}function S(t,e,s){const n=(t||[]).length;if(n>2){const o=[];for(let e=0;e<n-1;e++)o.push(...$(t[e][0],t[e][1],t[e+1][0],t[e+1][1],s));return e&&o.push(...$(t[n-1][0],t[n-1][1],t[0][0],t[0][1],s)),{type:"path",ops:o}}return 2===n?v(t[0][0],t[0][1],t[1][0],t[1][1],s):{type:"path",ops:[]}}function O(t,e,s,n,o){return function(t,e){return S(t,!0,e)}([[t,e],[t+s,e],[t+s,e+n],[t,e+n]],o)}function L(t,e){if(t.length){const s="number"==typeof t[0][0]?[t]:t,n=j(s[0],1*(1+.2*e.roughness),e),o=e.disableMultiStroke?[]:j(s[0],1.5*(1+.22*e.roughness),z(e));for(let t=1;t<s.length;t++){const a=s[t];if(a.length){const t=j(a,1*(1+.2*e.roughness),e),s=e.disableMultiStroke?[]:j(a,1.5*(1+.22*e.roughness),z(e));for(const e of t)"move"!==e.op&&n.push(e);for(const t of s)"move"!==t.op&&o.push(t)}}return{type:"path",ops:n.concat(o)}}return{type:"path",ops:[]}}function T(t,e,s){const n=Math.sqrt(2*Math.PI*Math.sqrt((Math.pow(t/2,2)+Math.pow(e/2,2))/2)),o=Math.ceil(Math.max(s.curveStepCount,s.curveStepCount/Math.sqrt(200)*n)),a=2*Math.PI/o;let h=Math.abs(t/2),r=Math.abs(e/2);const i=1-s.curveFitting;return h+=G(h*i,s),r+=G(r*i,s),{increment:a,rx:h,ry:r}}function D(t,e,s,n){const[o,a]=F(n.increment,t,e,n.rx,n.ry,1,n.increment*E(.1,E(.4,1,s),s),s);let h=q(o,null,s);if(!s.disableMultiStroke&&0!==s.roughness){const[o]=F(n.increment,t,e,n.rx,n.ry,1.5,0,s),a=q(o,null,s);h=h.concat(a)}return{estimatedPoints:a,opset:{type:"path",ops:h}}}function A(t,e,s,n,o,a,h,r,i){const c=t,l=e;let u=Math.abs(s/2),p=Math.abs(n/2);u+=G(.01*u,i),p+=G(.01*p,i);let f=o,d=a;for(;f<0;)f+=2*Math.PI,d+=2*Math.PI;d-f>2*Math.PI&&(f=0,d=2*Math.PI);const g=2*Math.PI/i.curveStepCount,M=Math.min(g/2,(d-f)/2),k=V(M,c,l,u,p,f,d,1,i);if(!i.disableMultiStroke){const t=V(M,c,l,u,p,f,d,1.5,i);k.push(...t)}return h&&(r?k.push(...$(c,l,c+u*Math.cos(f),l+p*Math.sin(f),i),...$(c,l,c+u*Math.cos(d),l+p*Math.sin(d),i)):k.push({op:"lineTo",data:[c,l]},{op:"lineTo",data:[c+u*Math.cos(f),l+p*Math.sin(f)]})),{type:"path",ops:k}}function _(t,e){const s=m(y(b(t))),n=[];let o=[0,0],a=[0,0];for(const{key:t,data:h}of s)switch(t){case"M":a=[h[0],h[1]],o=[h[0],h[1]];break;case"L":n.push(...$(a[0],a[1],h[0],h[1],e)),a=[h[0],h[1]];break;case"C":{const[t,s,o,r,i,c]=h;n.push(...Z(t,s,o,r,i,c,a,e)),a=[i,c];break}case"Z":n.push(...$(a[0],a[1],o[0],o[1],e)),a=[o[0],o[1]]}return{type:"path",ops:n}}function I(t,e){const s=[];for(const n of t)if(n.length){const t=e.maxRandomnessOffset||0,o=n.length;if(o>2){s.push({op:"move",data:[n[0][0]+G(t,e),n[0][1]+G(t,e)]});for(let a=1;a<o;a++)s.push({op:"lineTo",data:[n[a][0]+G(t,e),n[a][1]+G(t,e)]})}}return{type:"fillPath",ops:s}}function C(t,e){return function(t,e){let s=t.fillStyle||"hachure";if(!u[s])switch(s){case"zigzag":u[s]||(u[s]=new h(e));break;case"cross-hatch":u[s]||(u[s]=new r(e));break;case"dots":u[s]||(u[s]=new i(e));break;case"dashed":u[s]||(u[s]=new c(e));break;case"zigzag-line":u[s]||(u[s]=new l(e));break;default:s="hachure",u[s]||(u[s]=new o(e))}return u[s]}(e,P).fillPolygons(t,e)}function z(t){const e=Object.assign({},t);return e.randomizer=void 0,t.seed&&(e.seed=t.seed+1),e}function W(t){return t.randomizer||(t.randomizer=new p(t.seed||0)),t.randomizer.next()}function E(t,e,s,n=1){return s.roughness*n*(W(s)*(e-t)+t)}function G(t,e,s=1){return E(-t,t,e,s)}function $(t,e,s,n,o,a=!1){const h=a?o.disableMultiStrokeFill:o.disableMultiStroke,r=R(t,e,s,n,o,!0,!1);if(h)return r;const i=R(t,e,s,n,o,!0,!0);return r.concat(i)}function R(t,e,s,n,o,a,h){const r=Math.pow(t-s,2)+Math.pow(e-n,2),i=Math.sqrt(r);let c=1;c=i<200?1:i>500?.4:-.0016668*i+1.233334;let l=o.maxRandomnessOffset||0;l*l*100>r&&(l=i/10);const u=l/2,p=.2+.2*W(o);let f=o.bowing*o.maxRandomnessOffset*(n-e)/200,d=o.bowing*o.maxRandomnessOffset*(t-s)/200;f=G(f,o,c),d=G(d,o,c);const g=[],M=()=>G(u,o,c),k=()=>G(l,o,c),b=o.preserveVertices;return a&&(h?g.push({op:"move",data:[t+(b?0:M()),e+(b?0:M())]}):g.push({op:"move",data:[t+(b?0:G(l,o,c)),e+(b?0:G(l,o,c))]})),h?g.push({op:"bcurveTo",data:[f+t+(s-t)*p+M(),d+e+(n-e)*p+M(),f+t+2*(s-t)*p+M(),d+e+2*(n-e)*p+M(),s+(b?0:M()),n+(b?0:M())]}):g.push({op:"bcurveTo",data:[f+t+(s-t)*p+k(),d+e+(n-e)*p+k(),f+t+2*(s-t)*p+k(),d+e+2*(n-e)*p+k(),s+(b?0:k()),n+(b?0:k())]}),g}function j(t,e,s){if(!t.length)return[];const n=[];n.push([t[0][0]+G(e,s),t[0][1]+G(e,s)]),n.push([t[0][0]+G(e,s),t[0][1]+G(e,s)]);for(let o=1;o<t.length;o++)n.push([t[o][0]+G(e,s),t[o][1]+G(e,s)]),o===t.length-1&&n.push([t[o][0]+G(e,s),t[o][1]+G(e,s)]);return q(n,null,s)}function q(t,e,s){const n=t.length,o=[];if(n>3){const a=[],h=1-s.curveTightness;o.push({op:"move",data:[t[1][0],t[1][1]]});for(let e=1;e+2<n;e++){const s=t[e];a[0]=[s[0],s[1]],a[1]=[s[0]+(h*t[e+1][0]-h*t[e-1][0])/6,s[1]+(h*t[e+1][1]-h*t[e-1][1])/6],a[2]=[t[e+1][0]+(h*t[e][0]-h*t[e+2][0])/6,t[e+1][1]+(h*t[e][1]-h*t[e+2][1])/6],a[3]=[t[e+1][0],t[e+1][1]],o.push({op:"bcurveTo",data:[a[1][0],a[1][1],a[2][0],a[2][1],a[3][0],a[3][1]]})}if(e&&2===e.length){const t=s.maxRandomnessOffset;o.push({op:"lineTo",data:[e[0]+G(t,s),e[1]+G(t,s)]})}}else 3===n?(o.push({op:"move",data:[t[1][0],t[1][1]]}),o.push({op:"bcurveTo",data:[t[1][0],t[1][1],t[2][0],t[2][1],t[2][0],t[2][1]]})):2===n&&o.push(...R(t[0][0],t[0][1],t[1][0],t[1][1],s,!0,!0));return o}function F(t,e,s,n,o,a,h,r){const i=[],c=[];if(0===r.roughness){t/=4,c.push([e+n*Math.cos(-t),s+o*Math.sin(-t)]);for(let a=0;a<=2*Math.PI;a+=t){const t=[e+n*Math.cos(a),s+o*Math.sin(a)];i.push(t),c.push(t)}c.push([e+n*Math.cos(0),s+o*Math.sin(0)]),c.push([e+n*Math.cos(t),s+o*Math.sin(t)])}else{const l=G(.5,r)-Math.PI/2;c.push([G(a,r)+e+.9*n*Math.cos(l-t),G(a,r)+s+.9*o*Math.sin(l-t)]);const u=2*Math.PI+l-.01;for(let h=l;h<u;h+=t){const t=[G(a,r)+e+n*Math.cos(h),G(a,r)+s+o*Math.sin(h)];i.push(t),c.push(t)}c.push([G(a,r)+e+n*Math.cos(l+2*Math.PI+.5*h),G(a,r)+s+o*Math.sin(l+2*Math.PI+.5*h)]),c.push([G(a,r)+e+.98*n*Math.cos(l+h),G(a,r)+s+.98*o*Math.sin(l+h)]),c.push([G(a,r)+e+.9*n*Math.cos(l+.5*h),G(a,r)+s+.9*o*Math.sin(l+.5*h)])}return[c,i]}function V(t,e,s,n,o,a,h,r,i){const c=a+G(.1,i),l=[];l.push([G(r,i)+e+.9*n*Math.cos(c-t),G(r,i)+s+.9*o*Math.sin(c-t)]);for(let a=c;a<=h;a+=t)l.push([G(r,i)+e+n*Math.cos(a),G(r,i)+s+o*Math.sin(a)]);return l.push([e+n*Math.cos(h),s+o*Math.sin(h)]),l.push([e+n*Math.cos(h),s+o*Math.sin(h)]),q(l,null,i)}function Z(t,e,s,n,o,a,h,r){const i=[],c=[r.maxRandomnessOffset||1,(r.maxRandomnessOffset||1)+.3];let l=[0,0];const u=r.disableMultiStroke?1:2,p=r.preserveVertices;for(let f=0;f<u;f++)0===f?i.push({op:"move",data:[h[0],h[1]]}):i.push({op:"move",data:[h[0]+(p?0:G(c[0],r)),h[1]+(p?0:G(c[0],r))]}),l=p?[o,a]:[o+G(c[f],r),a+G(c[f],r)],i.push({op:"bcurveTo",data:[t+G(c[f],r),e+G(c[f],r),s+G(c[f],r),n+G(c[f],r),l[0],l[1]]});return i}function Q(t){return[...t]}function H(t,e=0){const s=t.length;if(s<3)throw new Error("A curve must have at least three points.");const n=[];if(3===s)n.push(Q(t[0]),Q(t[1]),Q(t[2]),Q(t[2]));else{const s=[];s.push(t[0],t[0]);for(let e=1;e<t.length;e++)s.push(t[e]),e===t.length-1&&s.push(t[e]);const o=[],a=1-e;n.push(Q(s[0]));for(let t=1;t+2<s.length;t++){const e=s[t];o[0]=[e[0],e[1]],o[1]=[e[0]+(a*s[t+1][0]-a*s[t-1][0])/6,e[1]+(a*s[t+1][1]-a*s[t-1][1])/6],o[2]=[s[t+1][0]+(a*s[t][0]-a*s[t+2][0])/6,s[t+1][1]+(a*s[t][1]-a*s[t+2][1])/6],o[3]=[s[t+1][0],s[t+1][1]],n.push(o[1],o[2],o[3])}}return n}function N(t,e){return Math.pow(t[0]-e[0],2)+Math.pow(t[1]-e[1],2)}function B(t,e,s){const n=N(e,s);if(0===n)return N(t,e);let o=((t[0]-e[0])*(s[0]-e[0])+(t[1]-e[1])*(s[1]-e[1]))/n;return o=Math.max(0,Math.min(1,o)),N(t,J(e,s,o))}function J(t,e,s){return[t[0]+(e[0]-t[0])*s,t[1]+(e[1]-t[1])*s]}function K(t,e,s,n){const o=n||[];if(function(t,e){const s=t[e+0],n=t[e+1],o=t[e+2],a=t[e+3];let h=3*n[0]-2*s[0]-a[0];h*=h;let r=3*n[1]-2*s[1]-a[1];r*=r;let i=3*o[0]-2*a[0]-s[0];i*=i;let c=3*o[1]-2*a[1]-s[1];return c*=c,h<i&&(h=i),r<c&&(r=c),h+r}(t,e)<s){const s=t[e+0];if(o.length){(a=o[o.length-1],h=s,Math.sqrt(N(a,h)))>1&&o.push(s)}else o.push(s);o.push(t[e+3])}else{const n=.5,a=t[e+0],h=t[e+1],r=t[e+2],i=t[e+3],c=J(a,h,n),l=J(h,r,n),u=J(r,i,n),p=J(c,l,n),f=J(l,u,n),d=J(p,f,n);K([a,c,p,d],0,s,o),K([d,f,u,i],0,s,o)}var a,h;return o}function U(t,e){return X(t,0,t.length,e)}function X(t,e,s,n,o){const a=o||[],h=t[e],r=t[s-1];let i=0,c=1;for(let n=e+1;n<s-1;++n){const e=B(t[n],h,r);e>i&&(i=e,c=n)}return Math.sqrt(i)>n?(X(t,e,c+1,n,a),X(t,c,s,n,a)):(a.length||a.push(h),a.push(r)),a}function Y(t,e=.15,s){const n=[],o=(t.length-1)/3;for(let s=0;s<o;s++){K(t,3*s,e,n)}return s&&s>0?X(n,0,n.length,s):n}const tt="none";class et{constructor(t){this.defaultOptions={maxRandomnessOffset:2,roughness:1,bowing:1,stroke:"#000",strokeWidth:1,curveTightness:0,curveFitting:.95,curveStepCount:9,fillStyle:"hachure",fillWeight:-1,hachureAngle:-41,hachureGap:-1,dashOffset:-1,dashGap:-1,zigzagOffset:-1,seed:0,disableMultiStroke:!1,disableMultiStrokeFill:!1,preserveVertices:!1,fillShapeRoughnessGain:.8},this.config=t||{},this.config.options&&(this.defaultOptions=this._o(this.config.options))}static newSeed(){return Math.floor(Math.random()*2**31)}_o(t){return t?Object.assign({},this.defaultOptions,t):this.defaultOptions}_d(t,e,s){return{shape:t,sets:e||[],options:s||this.defaultOptions}}line(t,e,s,n,o){const a=this._o(o);return this._d("line",[v(t,e,s,n,a)],a)}rectangle(t,e,s,n,o){const a=this._o(o),h=[],r=O(t,e,s,n,a);if(a.fill){const o=[[t,e],[t+s,e],[t+s,e+n],[t,e+n]];"solid"===a.fillStyle?h.push(I([o],a)):h.push(C([o],a))}return a.stroke!==tt&&h.push(r),this._d("rectangle",h,a)}ellipse(t,e,s,n,o){const a=this._o(o),h=[],r=T(s,n,a),i=D(t,e,a,r);if(a.fill)if("solid"===a.fillStyle){const s=D(t,e,a,r).opset;s.type="fillPath",h.push(s)}else h.push(C([i.estimatedPoints],a));return a.stroke!==tt&&h.push(i.opset),this._d("ellipse",h,a)}circle(t,e,s,n){const o=this.ellipse(t,e,s,s,n);return o.shape="circle",o}linearPath(t,e){const s=this._o(e);return this._d("linearPath",[S(t,!1,s)],s)}arc(t,e,s,n,o,a,h=!1,r){const i=this._o(r),c=[],l=A(t,e,s,n,o,a,h,!0,i);if(h&&i.fill)if("solid"===i.fillStyle){const h=Object.assign({},i);h.disableMultiStroke=!0;const r=A(t,e,s,n,o,a,!0,!1,h);r.type="fillPath",c.push(r)}else c.push(function(t,e,s,n,o,a,h){const r=t,i=e;let c=Math.abs(s/2),l=Math.abs(n/2);c+=G(.01*c,h),l+=G(.01*l,h);let u=o,p=a;for(;u<0;)u+=2*Math.PI,p+=2*Math.PI;p-u>2*Math.PI&&(u=0,p=2*Math.PI);const f=(p-u)/h.curveStepCount,d=[];for(let t=u;t<=p;t+=f)d.push([r+c*Math.cos(t),i+l*Math.sin(t)]);return d.push([r+c*Math.cos(p),i+l*Math.sin(p)]),d.push([r,i]),C([d],h)}(t,e,s,n,o,a,i));return i.stroke!==tt&&c.push(l),this._d("arc",c,i)}curve(t,e){const s=this._o(e),n=[],o=L(t,s);if(s.fill&&s.fill!==tt)if("solid"===s.fillStyle){const e=L(t,Object.assign(Object.assign({},s),{disableMultiStroke:!0,roughness:s.roughness?s.roughness+s.fillShapeRoughnessGain:0}));n.push({type:"fillPath",ops:this._mergedShape(e.ops)})}else{const e=[],o=t;if(o.length){const t="number"==typeof o[0][0]?[o]:o;for(const n of t)n.length<3?e.push(...n):3===n.length?e.push(...Y(H([n[0],n[0],n[1],n[2]]),10,(1+s.roughness)/2)):e.push(...Y(H(n),10,(1+s.roughness)/2))}e.length&&n.push(C([e],s))}return s.stroke!==tt&&n.push(o),this._d("curve",n,s)}polygon(t,e){const s=this._o(e),n=[],o=S(t,!0,s);return s.fill&&("solid"===s.fillStyle?n.push(I([t],s)):n.push(C([t],s))),s.stroke!==tt&&n.push(o),this._d("polygon",n,s)}path(t,e){const s=this._o(e),n=[];if(!t)return this._d("path",n,s);t=(t||"").replace(/\n/g," ").replace(/(-\s)/g,"-").replace("/(ss)/g"," ");const o=s.fill&&"transparent"!==s.fill&&s.fill!==tt,a=s.stroke!==tt,h=!!(s.simplification&&s.simplification<1),r=function(t,e,s){const n=m(y(b(t))),o=[];let a=[],h=[0,0],r=[];const i=()=>{r.length>=4&&a.push(...Y(r,e)),r=[]},c=()=>{i(),a.length&&(o.push(a),a=[])};for(const{key:t,data:e}of n)switch(t){case"M":c(),h=[e[0],e[1]],a.push(h);break;case"L":i(),a.push([e[0],e[1]]);break;case"C":if(!r.length){const t=a.length?a[a.length-1]:h;r.push([t[0],t[1]])}r.push([e[0],e[1]]),r.push([e[2],e[3]]),r.push([e[4],e[5]]);break;case"Z":i(),a.push([h[0],h[1]])}if(c(),!s)return o;const l=[];for(const t of o){const e=U(t,s);e.length&&l.push(e)}return l}(t,1,h?4-4*(s.simplification||1):(1+s.roughness)/2),i=_(t,s);if(o)if("solid"===s.fillStyle)if(1===r.length){const e=_(t,Object.assign(Object.assign({},s),{disableMultiStroke:!0,roughness:s.roughness?s.roughness+s.fillShapeRoughnessGain:0}));n.push({type:"fillPath",ops:this._mergedShape(e.ops)})}else n.push(I(r,s));else n.push(C(r,s));return a&&(h?r.forEach((t=>{n.push(S(t,!1,s))})):n.push(i)),this._d("path",n,s)}opsToPath(t,e){let s="";for(const n of t.ops){const t="number"==typeof e&&e>=0?n.data.map((t=>+t.toFixed(e))):n.data;switch(n.op){case"move":s+=`M${t[0]} ${t[1]} `;break;case"bcurveTo":s+=`C${t[0]} ${t[1]}, ${t[2]} ${t[3]}, ${t[4]} ${t[5]} `;break;case"lineTo":s+=`L${t[0]} ${t[1]} `}}return s.trim()}toPaths(t){const e=t.sets||[],s=t.options||this.defaultOptions,n=[];for(const t of e){let e=null;switch(t.type){case"path":e={d:this.opsToPath(t),stroke:s.stroke,strokeWidth:s.strokeWidth,fill:tt};break;case"fillPath":e={d:this.opsToPath(t),stroke:tt,strokeWidth:0,fill:s.fill||tt};break;case"fillSketch":e=this.fillSketch(t,s)}e&&n.push(e)}return n}fillSketch(t,e){let s=e.fillWeight;return s<0&&(s=e.strokeWidth/2),{d:this.opsToPath(t),stroke:e.fill||tt,strokeWidth:s,fill:tt}}_mergedShape(t){return t.filter(((t,e)=>0===e||"move"!==t.op))}}class st{constructor(t,e){this.canvas=t,this.ctx=this.canvas.getContext("2d"),this.gen=new et(e)}draw(t){const e=t.sets||[],s=t.options||this.getDefaultOptions(),n=this.ctx,o=t.options.fixedDecimalPlaceDigits;for(const a of e)switch(a.type){case"path":n.save(),n.strokeStyle="none"===s.stroke?"transparent":s.stroke,n.lineWidth=s.strokeWidth,s.strokeLineDash&&n.setLineDash(s.strokeLineDash),s.strokeLineDashOffset&&(n.lineDashOffset=s.strokeLineDashOffset),this._drawToContext(n,a,o),n.restore();break;case"fillPath":{n.save(),n.fillStyle=s.fill||"";const e="curve"===t.shape||"polygon"===t.shape||"path"===t.shape?"evenodd":"nonzero";this._drawToContext(n,a,o,e),n.restore();break}case"fillSketch":this.fillSketch(n,a,s)}}fillSketch(t,e,s){let n=s.fillWeight;n<0&&(n=s.strokeWidth/2),t.save(),s.fillLineDash&&t.setLineDash(s.fillLineDash),s.fillLineDashOffset&&(t.lineDashOffset=s.fillLineDashOffset),t.strokeStyle=s.fill||"",t.lineWidth=n,this._drawToContext(t,e,s.fixedDecimalPlaceDigits),t.restore()}_drawToContext(t,e,s,n="nonzero"){t.beginPath();for(const n of e.ops){const e="number"==typeof s&&s>=0?n.data.map((t=>+t.toFixed(s))):n.data;switch(n.op){case"move":t.moveTo(e[0],e[1]);break;case"bcurveTo":t.bezierCurveTo(e[0],e[1],e[2],e[3],e[4],e[5]);break;case"lineTo":t.lineTo(e[0],e[1])}}"fillPath"===e.type?t.fill(n):t.stroke()}get generator(){return this.gen}getDefaultOptions(){return this.gen.defaultOptions}line(t,e,s,n,o){const a=this.gen.line(t,e,s,n,o);return this.draw(a),a}rectangle(t,e,s,n,o){const a=this.gen.rectangle(t,e,s,n,o);return this.draw(a),a}ellipse(t,e,s,n,o){const a=this.gen.ellipse(t,e,s,n,o);return this.draw(a),a}circle(t,e,s,n){const o=this.gen.circle(t,e,s,n);return this.draw(o),o}linearPath(t,e){const s=this.gen.linearPath(t,e);return this.draw(s),s}polygon(t,e){const s=this.gen.polygon(t,e);return this.draw(s),s}arc(t,e,s,n,o,a,h=!1,r){const i=this.gen.arc(t,e,s,n,o,a,h,r);return this.draw(i),i}curve(t,e){const s=this.gen.curve(t,e);return this.draw(s),s}path(t,e){const s=this.gen.path(t,e);return this.draw(s),s}}const nt="http://www.w3.org/2000/svg";class ot{constructor(t,e){this.svg=t,this.gen=new et(e)}draw(t){const e=t.sets||[],s=t.options||this.getDefaultOptions(),n=this.svg.ownerDocument||window.document,o=n.createElementNS(nt,"g"),a=t.options.fixedDecimalPlaceDigits;for(const h of e){let e=null;switch(h.type){case"path":e=n.createElementNS(nt,"path"),e.setAttribute("d",this.opsToPath(h,a)),e.setAttribute("stroke",s.stroke),e.setAttribute("stroke-width",s.strokeWidth+""),e.setAttribute("fill","none"),s.strokeLineDash&&e.setAttribute("stroke-dasharray",s.strokeLineDash.join(" ").trim()),s.strokeLineDashOffset&&e.setAttribute("stroke-dashoffset",`${s.strokeLineDashOffset}`);break;case"fillPath":e=n.createElementNS(nt,"path"),e.setAttribute("d",this.opsToPath(h,a)),e.setAttribute("stroke","none"),e.setAttribute("stroke-width","0"),e.setAttribute("fill",s.fill||""),"curve"!==t.shape&&"polygon"!==t.shape||e.setAttribute("fill-rule","evenodd");break;case"fillSketch":e=this.fillSketch(n,h,s)}e&&o.appendChild(e)}return o}fillSketch(t,e,s){let n=s.fillWeight;n<0&&(n=s.strokeWidth/2);const o=t.createElementNS(nt,"path");return o.setAttribute("d",this.opsToPath(e,s.fixedDecimalPlaceDigits)),o.setAttribute("stroke",s.fill||""),o.setAttribute("stroke-width",n+""),o.setAttribute("fill","none"),s.fillLineDash&&o.setAttribute("stroke-dasharray",s.fillLineDash.join(" ").trim()),s.fillLineDashOffset&&o.setAttribute("stroke-dashoffset",`${s.fillLineDashOffset}`),o}get generator(){return this.gen}getDefaultOptions(){return this.gen.defaultOptions}opsToPath(t,e){return this.gen.opsToPath(t,e)}line(t,e,s,n,o){const a=this.gen.line(t,e,s,n,o);return this.draw(a)}rectangle(t,e,s,n,o){const a=this.gen.rectangle(t,e,s,n,o);return this.draw(a)}ellipse(t,e,s,n,o){const a=this.gen.ellipse(t,e,s,n,o);return this.draw(a)}circle(t,e,s,n){const o=this.gen.circle(t,e,s,n);return this.draw(o)}linearPath(t,e){const s=this.gen.linearPath(t,e);return this.draw(s)}polygon(t,e){const s=this.gen.polygon(t,e);return this.draw(s)}arc(t,e,s,n,o,a,h=!1,r){const i=this.gen.arc(t,e,s,n,o,a,h,r);return this.draw(i)}curve(t,e){const s=this.gen.curve(t,e);return this.draw(s)}path(t,e){const s=this.gen.path(t,e);return this.draw(s)}}return{canvas:(t,e)=>new st(t,e),svg:(t,e)=>new ot(t,e),generator:t=>new et(t),newSeed:()=>et.newSeed()}}();
@@ -160,52 +172,106 @@ a:has(.nick){text-decoration:none}
 
 
 const TYPES = {
-  udobnaya:{name:"Хорошая девочка", short:"быть удобной",
-    formed:"Ане рано стало понятно: любят, когда она послушная и никого не огорчает. Быть удобной было очень умным детским способом сохранить любовь.",
-    adult:["трудно сказать «нет» и «не хочу»","желания других чувствует лучше, чем свои","извиняется, даже когда не виновата","обида копится и потом прорывается или превращается в усталость"],
-    when:"хочется сразу сказать «да», чтобы никого не огорчить", q:"А чего хочу я сама?"},
-  silnaya:{name:"Я сама", short:"справляться в одиночку",
-    formed:"Взрослым было не до неё, или ей рано пришлось стать взрослой самой. Аня научилась не нуждаться. Это помогло ей выдержать то, что ребёнку выдерживать не положено.",
-    adult:["не просит о помощи, даже когда очень тяжело","ждёт, что близкие догадаются сами, и злится, когда они не догадываются","тянет на себе быт, детей и отношения","рядом с близким человеком бывает очень одиноко"],
-    when:"привычно берёшь всё на себя и молчишь, как тебе тяжело", q:"О чём я могу сейчас попросить?"},
-  otlichnitsa:{name:"Заслужить любовь", short:"быть лучшей",
-    formed:"Тепло приходило за пятёрки, порядок и успехи. Аня научилась стараться изо всех сил. Это был способ, чтобы её заметили.",
-    adult:["старается быть идеальной женой, мамой, сотрудницей","критика ощущается как приговор","трудно отдыхать и радовать себя без чувства вины","кажется, что любят за что-то, а не просто так"],
-    when:"не разрешаешь себе отдохнуть, пока всё не сделано идеально", q:"Что изменится, если сейчас сделать не на пятёрку, а просто достаточно?"},
-  nevidimka:{name:"Не мешать", short:"прятать чувства",
-    formed:"Чувства Ани часто были не к месту: на них не было времени, над ними смеялись или их не разрешали. Она научилась их прятать. Так было безопаснее.",
-    adult:["на вопрос «как ты?» отвечает «нормально»","в ссоре замолкает и как будто выключается","близким трудно понять, что с ней происходит","близость пугает, хотя очень нужна"],
-    when:"говоришь «всё нормально», а внутри не нормально", q:"Что я чувствую прямо сейчас? Хотя бы одним словом."},
-  chutkaya:{name:"Радар", short:"следить за настроением других",
-    formed:"Дома было непредсказуемо: никогда не знаешь, каким будет настроение взрослых. Аня научилась замечать малейшие перемены, чтобы заранее приготовиться.",
-    adult:["постоянно считывает настроение близких","тишина или задержка вызывают сильную тревогу","готова на всё, лишь бы не было ссоры","трудно расслабиться, даже когда всё хорошо"],
-    when:"всё внимание ушло на настроение другого человека", q:"Что со мной происходит, пока я слежу за настроением других?"},
-  opora:{name:"Опора внутри", short:"опираться на себя и других",
-    formed:"В истории Ани было достаточно взрослых, которые замечали её чувства и были рядом. Это не значит, что всё было идеально. Это значит, что ей было на что опереться.",
-    adult:["может говорить о своих чувствах","умеет просить и принимать заботу","ссора для неё не означает конец любви","можно быть разной и оставаться любимой"],
-    when:"трудно и хочется сорваться", q:"Что мне сейчас поможет вернуться к себе?"}
+ "udobnaya": {
+  "name": "Хорошая девочка",
+  "short": "быть удобной",
+  "formed": "Ребёнок рано понимает: любят, когда он послушный и никого не огорчает. Быть удобным – очень умный детский способ сохранить любовь.",
+  "adult": [
+   "трудно сказать «нет» и «не хочу»",
+   "желания других чувствуются лучше, чем свои",
+   "хочется извиниться, даже когда нет вины",
+   "обида копится и потом прорывается или превращается в усталость"
+  ],
+  "when": "хочется сразу сказать «да», чтобы никого не огорчить",
+  "q": "А чего хочу я сама?"
+ },
+ "silnaya": {
+  "name": "Справлюсь сама",
+  "short": "справляться в одиночку",
+  "formed": "Взрослым было не до ребёнка, или ему рано пришлось стать взрослым самому. Так появляется умение не нуждаться. Оно помогает выдержать то, что ребёнку выдерживать не положено.",
+  "adult": [
+   "трудно просить о помощи, даже когда очень тяжело",
+   "есть ожидание, что близкие догадаются сами, и злость, когда не догадываются",
+   "быт, дети и отношения – всё на своих плечах",
+   "рядом с близким человеком бывает очень одиноко"
+  ],
+  "when": "привычно всё берётся на себя, а о том, как тяжело, – ни слова",
+  "q": "О чём я могу сейчас попросить?"
+ },
+ "otlichnitsa": {
+  "name": "Заслужить любовь",
+  "short": "быть лучшей",
+  "formed": "Тепло приходило за пятёрки, порядок и успехи. Так появляется привычка стараться изо всех сил: это способ сделать так, чтобы заметили.",
+  "adult": [
+   "хочется быть идеальной женой, мамой, сотрудницей",
+   "критика ощущается как приговор",
+   "трудно отдыхать и радовать себя без чувства вины",
+   "кажется, что любят за что-то, а не просто так"
+  ],
+  "when": "отдыхать не разрешается, пока всё не сделано идеально",
+  "q": "Что изменится, если сейчас сделать не на пятёрку, а просто достаточно?"
+ },
+ "nevidimka": {
+  "name": "Не мешать",
+  "short": "прятать чувства",
+  "formed": "Чувства ребёнка часто были не к месту: на них не было времени, над ними смеялись или их не разрешали. Так появляется привычка их прятать. Так было безопаснее.",
+  "adult": [
+   "на вопрос «как ты?» – «нормально»",
+   "в ссоре – тишина, как будто всё выключается",
+   "близким трудно понять, что происходит внутри",
+   "близость пугает, хотя очень нужна"
+  ],
+  "when": "на словах «всё нормально», а внутри не нормально",
+  "q": "Что я чувствую прямо сейчас? Хотя бы одним словом."
+ },
+ "chutkaya": {
+  "name": "Радар",
+  "short": "следить за настроением других",
+  "formed": "Дома было непредсказуемо: никогда не знаешь, каким будет настроение взрослых. Так появляется умение замечать малейшие перемены, чтобы заранее приготовиться.",
+  "adult": [
+   "настроение близких всё время на радаре",
+   "тишина или задержка вызывают сильную тревогу",
+   "готова подстраиваться, лишь бы не было ссоры",
+   "трудно расслабиться, даже когда всё хорошо"
+  ],
+  "when": "всё внимание ушло на настроение другого человека",
+  "q": "Что со мной происходит, пока я слежу за настроением других?"
+ },
+ "opora": {
+  "name": "Опора внутри",
+  "short": "опираться на себя и других",
+  "formed": "В детстве было достаточно взрослых, которые замечали чувства и оставались рядом. Это не значит, что всё было идеально. Это значит, что было на что опереться.",
+  "adult": [
+   "можно говорить о своих чувствах",
+   "получается просить и принимать заботу",
+   "ссора не означает конец любви",
+   "можно быть разной и оставаться любимой"
+  ],
+  "when": "трудно и хочется сорваться",
+  "q": "Что мне сейчас поможет вернуться к себе?"
+ }
 };
 
 /* Детство: 21 разная ситуация. Повторная игра показывает новые в 6 возрастных периодах. В каждой игре – по одной из каждого периода. */
 const CHILD = [
  {band:0, age:3, text:"Ане 3 года. Она бежит по двору, падает и разбивает коленку. Плачет.", opts:[
-  ["«Не реви, ничего страшного!»","nevidimka","Мои слёзы никому не нужны. Лучше не показывать, что больно."],
+  ["Мама кричит: «А ну замолчи! Ещё раз заревёшь – получишь!»","nevidimka","Мои слёзы никому не нужны. Лучше не показывать, что больно."],
   ["«Сама виновата, говорила же: не бегай!»","udobnaya","Надо слушаться, тогда не будут ругать."],
   ["Мама разговаривает по телефону и машет рукой: «Потом!»","silnaya","Справлюсь сама. Всё равно никто не подойдёт."],
   ["Мама пугается и кричит громче, чем плачет Аня","chutkaya","Когда мне плохо, маме ещё хуже. Надо следить за мамой."],
-  ["Мама подбегает, дует на коленку: «Ну-ка, покажи. Ох, ободрала. Пойдём заклеим»","opora","Когда больно, можно позвать, и ко мне придут."]]},
+  ["Мама подбегает, дует на коленку: «Ну-ка, покажи. Ох, ободрала. Пойдём заклеим»","opora","Когда больно, можно попросить помощи, и ко мне придут."]]},
  {band:0, age:4, text:"Ане 4 года. Ночью ей страшно в темноте. Она зовёт маму.", opts:[
   ["«Хватит выдумывать, спи давай!»","nevidimka","Мой страх – это глупости. Лучше молчать."],
   ["«Большие девочки темноты не боятся»","otlichnitsa","Бояться стыдно. Надо быть большой."],
   ["Никто не приходит. Аня обнимает зайца и засыпает сама","silnaya","Я могу успокоить себя сама. Звать бесполезно."],
-  ["«Опять ты! Мама устала, не мучай меня»","udobnaya","Мои страхи утомляют маму. Нельзя быть обузой."],
-  ["Мама сонная приходит, ворчит «опять?», но ложится рядом","opora","Когда мне страшно, рядом кто-то есть."]]},
+  ["Мама врывается в комнату: «Ещё раз встанешь – запру дверь!»","udobnaya","Мои страхи утомляют маму. Нельзя быть обузой."],
+  ["Мама сонная приходит и успокаивает","opora","Мои чувства имеют значение, я не одна."]]},
  {band:0, age:4, text:"Ане 4 года. В гости пришла тётя, которую Аня почти не знает. «Ну-ка, поцелуй тётю!» А Ане не хочется.", opts:[
-  ["«Не позорь меня, поцелуй быстро!»","udobnaya","Чужое желание важнее моего «не хочу»."],
+  ["«Не позорь меня, поцелуй быстро!»","udobnaya","Чужое желание важнее моего."],
   ["Мама хмурится, и Аня по её лицу понимает: надо","chutkaya","Надо смотреть на мамино лицо и делать, как нужно."],
   ["«Ты что, невоспитанная?»","otlichnitsa","Хорошую девочку видно по поведению."],
   ["Взрослые смеются над тем, как Аня прячется за маму","nevidimka","Мои чувства смешные. Лучше их не показывать."],
-  ["Мама смеётся: «Она у нас стесняется. Помаши тёте»","opora","Моё «нет» слышат и уважают."]]},
+  ["Мама улыбается: «Она у нас стесняется. Помаши тёте»","opora","Моё «нет» слышат и уважают."]]},
  {band:1, age:5, text:"Ане 5 лет. Она долго рисовала дом, маму и солнце. Несёт показать.", opts:[
   ["«Красиво, но вот тут криво. Переделай аккуратнее»","otlichnitsa","Хорошо – это когда без ошибок."],
   ["«Не сейчас, я занята»","nevidimka","То, что важно мне, неважно другим."],
@@ -222,7 +288,7 @@ const CHILD = [
   ["«Хорошие девочки так себя не ведут!»","udobnaya","Злиться плохо. Хорошая девочка всегда довольна."],
   ["«Иди в комнату и выходи, когда успокоишься»","nevidimka","Со злостью я должна быть одна."],
   ["«Ты же старшая, должна понимать»","silnaya","Мне нельзя быть маленькой."],
-  ["Папа кричит в ответ так, что Аня замирает","chutkaya","Злость показывать нельзя: будет страшно."],
+  ["Папа хватает Аню за руку и орёт: «Закрой рот! Чтоб я тебя не слышал!»","chutkaya","Злость показывать нельзя: будет страшно."],
   ["«Обидно, да? Столько строила! Давай отнесём его в другую комнату и построим заново»","opora","Злиться можно. Со злостью можно что-то делать."]]},
  {band:2, age:7, text:"Ане 7 лет. Первый класс. На переменах с ней никто не играет. Дома она рассказывает об этом.", opts:[
   ["«Значит, сама что-то не так делаешь»","otlichnitsa","Если со мной не дружат, значит, я недостаточно хорошая."],
@@ -231,13 +297,13 @@ const CHILD = [
   ["Мама так расстраивается, что Аня жалеет, что рассказала","chutkaya","Мои проблемы ранят маму. Лучше её беречь."],
   ["Мама обнимает: «Эх… А может, позовём кого-нибудь из класса к нам в субботу?»","opora","Когда мне грустно, с этим можно прийти."]]},
  {band:2, age:8, text:"Ане 8 лет. Она принесла из школы двойку по математике.", opts:[
-  ["«Двойка?! Ты вообще чем на уроках занимаешься?»","otlichnitsa","Ошибаться нельзя. Любят только за хорошие оценки."],
+  ["Мама рвёт дневник: «Тупица! В кого ты такая уродилась?»","otlichnitsa","Ошибаться нельзя. Любят только за хорошие оценки."],
   ["Никто не спрашивает про школу. Уроки – её забота","silnaya","Это моё дело. Помощи не жди."],
   ["«Ты меня так огорчаешь…»","udobnaya","Мама грустит из-за меня. Надо её не расстраивать."],
   ["Аня прячет дневник: неизвестно, каким сегодня вернётся папа","chutkaya","Надо всегда быть начеку."],
-  ["Мама вздыхает: «Ну, бывает. Неси тетрадку, посмотрим, что там»","opora","Ошибаться не страшно. Мне помогут."]]},
+  ["Мама мягко улыбается и говорит: «Ничего страшного, бывает. Давай вместе посмотрим, что там в тетрадке – вместе разберёмся!»","opora","Ошибаться не страшно. Мне помогут."]]},
  {band:3, age:9, text:"Ане 9 лет. Она нечаянно разбила мамину любимую чашку.", opts:[
-  ["«Руки-крюки! Ничего тебе доверить нельзя»","otlichnitsa","Ошибка – значит, я плохая."],
+  ["Мама кричит: «Безрукая! Вечно всё портишь! Убирай, и чтобы я тебя не видела!»","otlichnitsa","Ошибка – значит, я плохая."],
   ["Мама молча собирает осколки и весь вечер не разговаривает с Аней","udobnaya","Если я ошибусь, меня перестанут любить."],
   ["Аня прячет осколки, пока никто не видит: реакция взрослых может быть любой","chutkaya","Лучше скрыть, чем гадать, что будет."],
   ["Никто не заметил. Аня сама выбрасывает осколки и никому не говорит","silnaya","Свои проблемы я решаю сама и молча."],
@@ -247,7 +313,7 @@ const CHILD = [
   ["«Бросают только слабаки. Доучишься»","otlichnitsa","Нельзя сдаваться, даже если плохо."],
   ["«Делай что хочешь, мне всё равно»","nevidimka","Мои желания никому не интересны."],
   ["Мама вздыхает: «А я в детстве так мечтала о пианино…» Аня продолжает ради мамы","chutkaya","Мамины чувства важнее моих слёз."],
-  ["«Совсем надоело? Давай до конца четверти, а потом решим вместе»","opora","Моё «не хочу» можно обсудить."]]},
+  ["«Совсем надоело? Давай до конца четверти, а потом вернёмся к этому вопросу»","opora","Моё «не хочу» можно обсудить."]]},
  {band:3, age:10, text:"Ане 10 лет. Ночью она слышит, как родители кричат друг на друга на кухне.", opts:[
   ["Утром все делают вид, что ничего не было","nevidimka","О плохом не говорят. Буду делать вид, что всё нормально."],
   ["Мама плачет и рассказывает Ане, какой папа плохой","silnaya","Теперь я должна поддерживать маму."],
@@ -259,18 +325,18 @@ const CHILD = [
   ["«Ты теперь помогай, маме и так тяжело»","silnaya","Я должна быть опорой для взрослых."],
   ["Мама на нервах и срывается по пустякам. Аня старается не попадаться ей на глаза","chutkaya","Надо читать настроение и вовремя прятаться."],
   ["«Веди себя хорошо, не расстраивай маму»","udobnaya","Чтобы всем было легче, я должна быть удобной."],
-  ["Мама замечает Аню: «Иди сюда. Бабушке плохо, мы переживаем. Спрашивай, если что»","opora","Правду можно выдержать, когда ты не одна."]]},
+  ["Мама замечает Аню, подходит к ней и тихо говорит: «Иди сюда, солнышко. Бабушке сейчас не очень хорошо, мы все немного переживаем. Если что-то непонятно – обязательно скажи, я тут»","opora","Правду можно выдержать, когда я не одна."]]},
  {band:4, age:13, text:"Ане 13 лет. Она пришла из школы, закрылась в комнате и плачет. Кажется, её никто не любит.", opts:[
   ["«Нечего раскисать, лучше уроки сделай»","otlichnitsa","Чувства – это слабость. Дело важнее."],
   ["Никто не замечает, что что-то не так","nevidimka","Меня всё равно никто не видит."],
   ["Маме некогда: надо забрать младшего с продлёнки и приготовить ужин","silnaya","Мои проблемы подождут. Есть дела важнее."],
   ["«Ты что-то от меня скрываешь?! Я тебе всё отдаю, а ты…»","udobnaya","Мне нельзя иметь своё. Иначе мама обидится."],
-  ["Мама приносит чай с печеньем, ставит на стол: «Я тут, если что»","opora","Даже когда мне плохо, я не одна."]]},
+  ["Мама подходит, садится рядом и тихо спрашивает: «Как твои дела, солнышко?»","opora","Даже когда мне плохо, я не одна."]]},
  {band:5, age:14, text:"Ане 14 лет. Она мечтает поступать на художника и показывает родителям свои рисунки.", opts:[
   ["«Художником не заработаешь. Пойдёшь на экономиста»","udobnaya","Мечты надо отложить ради того, как правильно."],
   ["«Поступать – так в лучший вуз. А у тебя пока слабовато»","otlichnitsa","Быть просто собой мало. Надо быть лучшей."],
   ["«Сама решай, это твоя жизнь», – не отрываясь от телефона","silnaya","Во всём важном я сама."],
-  ["Папа смеётся: «Ну и мазня». Аня больше никому не показывает рисунки","nevidimka","То, что мне дорого, лучше прятать."],
+  ["Папа рвёт рисунки: «Хватит ерундой заниматься! Ещё раз увижу – выброшу всё»","nevidimka","То, что мне дорого, лучше прятать."],
   ["Папа хмыкает: «Художником, конечно, не заработаешь». А мама добавляет: «Но давай узнаем, куда можно»","opora","Моё желание важно. Меня поддержат."]]},
  {band:5, age:15, text:"Ане 15 лет. Она впервые влюбилась и решается рассказать маме.", opts:[
   ["«Какая любовь? Тебе учиться надо!»","otlichnitsa","Сначала дела, потом чувства."],
@@ -279,14 +345,14 @@ const CHILD = [
   ["«Главное – будь хорошей девочкой, чтобы он тебя не бросил»","udobnaya","Чтобы меня любили, надо подстраиваться."],
   ["Мама улыбается: «Ого! Ну и кто он? Только сначала уроки»","opora","Мои чувства – это хорошо. Ими можно делиться."]]},
  {band:0, age:3, text:"Ане 3 года. В песочнице мальчик хочет взять её ведёрко. Аня прижимает его к себе и кричит: «Моё!»", opts:[
-  ["«Не жадничай! Хорошие девочки делятся»","udobnaya","Мои вещи не совсем мои. Хорошая девочка всё отдаёт."],
-  ["Мама краснеет, оглядывается на других мам и при всех отбирает ведёрко","chutkaya","Маме стыдно из-за меня. Надо следить, что подумают люди."],
-  ["«Ну и сиди одна со своим ведром»","silnaya","Если я держусь за своё, я остаюсь одна. Справлюсь."],
+  ["«Не жадничай! Хорошие девочки делятся»","udobnaya","Хорошая девочка должна делиться."],
+  ["Мама краснеет, оглядывается на других мам и при всех отбирает ведёрко","chutkaya","Маме стыдно из-за меня. Что подумают люди?"],
+  ["«Ну и сиди одна со своим ведром»","silnaya","Если я держусь за своё, я остаюсь одна."],
   ["«Вот Петя не жадный, а ты жадина»","otlichnitsa","Другие лучше меня. Надо стараться стать хорошей."],
   ["«Не хочешь давать – не давай. Может, у мальчика тоже есть что-то интересное?»","opora","Моё – это моё. Я могу решать сама."]]},
  {band:2, age:7, text:"Ане 7 лет. Брат толкнул её первым, она толкнула в ответ. Наказали только Аню.", opts:[
   ["«Ты старшая, с тебя и спрос»","silnaya","Я всегда отвечаю за всё одна."],
-  ["«Не оправдывайся, а то хуже будет»","nevidimka","Объяснять бесполезно. Лучше промолчать."],
+  ["«Ещё слово – и останешься без ужина. Марш в угол!»","nevidimka","Объяснять бесполезно. Лучше промолчать."],
   ["«Иди извинись перед братом»","udobnaya","Мир важнее правды. Извинюсь, даже если не виновата."],
   ["Аня видит, что папа уже злой, и молчит, пока он не остынет","chutkaya","Сначала надо понять, в каком настроении взрослые."],
   ["«Стоп. Кто первый начал? Так, по очереди»","opora","Меня выслушают. Справедливость бывает."]]},
@@ -297,7 +363,7 @@ const CHILD = [
   ["Мама так злится, что собирается идти в школу со скандалом. Аня больше ничего не рассказывает","chutkaya","Мои беды вызывают бурю. Лучше их скрывать."],
   ["«Вот дураки. А мне кажется, тебе идёт. Хочешь, выберем новую оправу?»","opora","Мне обидно, и с этим можно разобраться вместе."]]},
  {band:4, age:11, text:"Ане 11 лет. Лучшая подруга рассказала её секрет всему классу. Аня приходит домой и плачет.", opts:[
-  ["«Нашла из-за чего реветь»","nevidimka","Мои чувства – ерунда. Лучше их не показывать."],
+  ["«Нечего было языком трепать. Сама дура, сама и разбирайся»","nevidimka","Мои чувства – ерунда. Лучше их не показывать."],
   ["«Сама виновата: не надо было никому рассказывать»","silnaya","Доверять нельзя никому. Справляйся сама."],
   ["«Помирись с ней, не надо ссориться»","udobnaya","Мир важнее моей обиды."],
   ["Мама сразу звонит маме подруги и ругается. Аня в ужасе: теперь в классе будет ещё хуже","chutkaya","Надо следить, что взрослые сделают с моими чувствами."],
@@ -857,19 +923,19 @@ const LATER=[
 ];
 
 /* Что могла решить маленькая Аня (по индексу CHILD): [вывод, способ] */
-const CONCL=[[["Надо слушаться, тогда не будут ругать.", "udobnaya"], ["Плакать нельзя. Надо быть сильной и справляться самой.", "silnaya"], ["Падать стыдно. Надо быть осторожной и всё делать правильно.", "otlichnitsa"], ["Мои слёзы никому не нужны. Лучше не показывать, что больно.", "nevidimka"], ["Когда мне плохо, маме ещё хуже. Надо следить за мамой.", "chutkaya"], ["Когда больно, можно позвать, и ко мне придут.", "opora"]], [["Мои страхи утомляют маму. Нельзя быть обузой.", "udobnaya"], ["Я могу успокоить себя сама. Звать бесполезно.", "silnaya"], ["Бояться стыдно. Надо быть большой.", "otlichnitsa"], ["Мой страх – это глупости. Лучше молчать.", "nevidimka"], ["Надо сначала понять, не рассердится ли мама, если я позову.", "chutkaya"], ["Когда мне страшно, рядом кто-то есть.", "opora"]], [["Чужое желание важнее моего «не хочу».", "udobnaya"], ["Если не хочу, надо как-то выкручиваться самой.", "silnaya"], ["Хорошую девочку видно по поведению.", "otlichnitsa"], ["Мои чувства смешные. Лучше их не показывать.", "nevidimka"], ["Надо смотреть на мамино лицо и делать, как нужно.", "chutkaya"], ["Моё «нет» слышат и уважают.", "opora"]], [["Надо рисовать то, что понравится маме.", "udobnaya"], ["Буду рисовать для себя. Показывать не обязательно.", "silnaya"], ["Хорошо – это когда без ошибок.", "otlichnitsa"], ["То, что важно мне, неважно другим.", "nevidimka"], ["Сначала надо понять, какое у мамы настроение.", "chutkaya"], ["Мне интересно, и я сама интересна.", "opora"]], [["Буду помогать с братом, тогда меня тоже будут любить.", "udobnaya"], ["Теперь я взрослая. Моё детство кончилось.", "silnaya"], ["Меня замечают, когда я полезная и хорошая.", "otlichnitsa"], ["Меня больше не видно.", "nevidimka"], ["Дома надо быть тихой и настороже.", "chutkaya"], ["У меня есть своё место, даже когда есть брат.", "opora"]], [["Злиться плохо. Хорошая девочка всегда довольна.", "udobnaya"], ["Мне нельзя быть маленькой. Справлюсь со злостью сама.", "silnaya"], ["Я старшая и должна вести себя правильно.", "otlichnitsa"], ["Со злостью я должна быть одна.", "nevidimka"], ["Злость показывать нельзя: будет страшно.", "chutkaya"], ["Злиться можно. Со злостью можно что-то делать.", "opora"]], [["Чтобы со мной дружили, надо всем угождать.", "udobnaya"], ["С трудностями я остаюсь одна.", "silnaya"], ["Если со мной не дружат, значит, я недостаточно хорошая.", "otlichnitsa"], ["Лучше не рассказывать. Всё равно ничего не изменится.", "nevidimka"], ["Мои проблемы ранят маму. Лучше её беречь.", "chutkaya"], ["Когда мне грустно, с этим можно прийти.", "opora"]], [["Мама грустит из-за меня. Надо её не расстраивать.", "udobnaya"], ["Это моё дело. Помощи не жди.", "silnaya"], ["Ошибаться нельзя. Любят только за хорошие оценки.", "otlichnitsa"], ["Лучше никому не показывать, если что-то не получается.", "nevidimka"], ["Надо всегда быть начеку.", "chutkaya"], ["Ошибаться не страшно. Мне помогут.", "opora"]], [["Если я ошибусь, меня перестанут любить.", "udobnaya"], ["Свои проблемы я решаю сама и молча.", "silnaya"], ["Ошибка – значит, я плохая.", "otlichnitsa"], ["Лучше бы меня вообще не замечали.", "nevidimka"], ["Лучше скрыть, чем гадать, что будет.", "chutkaya"], ["Ошибка – не конец. Меня любят и такой.", "opora"]], [["Я должна оправдывать ожидания.", "udobnaya"], ["Раз начала, дотяну сама, как бы ни было тяжело.", "silnaya"], ["Нельзя сдаваться, даже если плохо.", "otlichnitsa"], ["Мои желания никому не интересны.", "nevidimka"], ["Мамины чувства важнее моих слёз.", "chutkaya"], ["Моё «не хочу» можно обсудить.", "opora"]], [["От того, какая я, зависит, будет ли у нас семья.", "udobnaya"], ["Теперь я должна поддерживать маму.", "silnaya"], ["Если я буду очень хорошей, они перестанут ссориться.", "otlichnitsa"], ["О плохом не говорят. Буду делать вид, что всё нормально.", "nevidimka"], ["Опасность может быть в любую минуту.", "chutkaya"], ["Взрослые разберутся сами. Я не отвечаю за их отношения.", "opora"]], [["Чтобы всем было легче, я должна быть удобной.", "udobnaya"], ["Я должна быть опорой для взрослых.", "silnaya"], ["Надо хорошо учиться, чтобы маме было хоть чем-то радоваться.", "otlichnitsa"], ["О важном со мной не говорят. Моё волнение не в счёт.", "nevidimka"], ["Надо читать настроение и вовремя прятаться.", "chutkaya"], ["Правду можно выдержать, когда ты не одна.", "opora"]], [["Мне нельзя иметь своё. Иначе мама обидится.", "udobnaya"], ["Мои проблемы подождут. Есть дела важнее.", "silnaya"], ["Чувства – это слабость. Дело важнее.", "otlichnitsa"], ["Меня всё равно никто не видит.", "nevidimka"], ["Нельзя плакать при маме: она будет переживать.", "chutkaya"], ["Даже когда мне плохо, я не одна.", "opora"]], [["Мечты надо отложить ради того, как правильно.", "udobnaya"], ["Во всём важном я сама.", "silnaya"], ["Быть просто собой мало. Надо быть лучшей.", "otlichnitsa"], ["То, что мне дорого, лучше прятать.", "nevidimka"], ["Сначала надо понять, как родители к этому отнесутся.", "chutkaya"], ["Моё желание важно. Меня поддержат.", "opora"]], [["Чтобы меня любили, надо подстраиваться.", "udobnaya"], ["Со своими чувствами я разберусь сама.", "silnaya"], ["Сначала дела, потом чувства.", "otlichnitsa"], ["Самое личное нельзя никому доверять.", "nevidimka"], ["Мои чувства могут вызвать бурю. Надо быть начеку.", "chutkaya"], ["Мои чувства – это хорошо. Ими можно делиться.", "opora"]], [["Мои вещи не совсем мои. Хорошая девочка всё отдаёт.", "udobnaya"], ["Если я держусь за своё, я остаюсь одна. Справлюсь.", "silnaya"], ["Другие лучше меня. Надо стараться стать хорошей.", "otlichnitsa"], ["Лучше ничего не хотеть, тогда не будет ссор.", "nevidimka"], ["Маме стыдно из-за меня. Надо следить, что подумают люди.", "chutkaya"], ["Моё – это моё. Я могу решать сама.", "opora"]], [["Мир важнее правды. Извинюсь, даже если не виновата.", "udobnaya"], ["Я всегда отвечаю за всё одна.", "silnaya"], ["Старшая должна быть умнее. Надо вести себя идеально.", "otlichnitsa"], ["Объяснять бесполезно. Лучше промолчать.", "nevidimka"], ["Сначала надо понять, в каком настроении взрослые.", "chutkaya"], ["Меня выслушают. Справедливость бывает.", "opora"]], [["Чтобы не обижали, надо быть удобной.", "udobnaya"], ["Обиду надо проглотить и справиться самой.", "silnaya"], ["Чтобы меня не трогали, надо быть лучшей.", "otlichnitsa"], ["Лучше стать незаметной, тогда не будут дразнить.", "nevidimka"], ["Мои беды вызывают бурю. Лучше их скрывать.", "chutkaya"], ["Мне обидно, и с этим можно разобраться вместе.", "opora"]], [["Мир важнее моей обиды.", "udobnaya"], ["Доверять нельзя никому. Справляйся сама.", "silnaya"], ["Наверное, я сама виновата. Надо быть лучше.", "otlichnitsa"], ["Мои чувства – ерунда. Лучше их не показывать.", "nevidimka"], ["Надо следить, что взрослые сделают с моими чувствами.", "chutkaya"], ["Даже когда меня предали, мне есть к кому прийти.", "opora"]], [["Если мама против, лучше не хотеть.", "udobnaya"], ["Мои желания подождут, пока я нужна.", "silnaya"], ["Радость надо заслужить.", "otlichnitsa"], ["Мои дела никому не интересны.", "nevidimka"], ["Мир опасен. Надо всегда быть настороже.", "chutkaya"], ["Мои желания важны, и обо мне заботятся.", "opora"]], [["У меня не может быть своего.", "udobnaya"], ["Своё надо охранять самой и никого не пускать.", "silnaya"], ["Мои чувства ничего не стоят. Важны только успехи.", "otlichnitsa"], ["Самое личное надо прятать.", "nevidimka"], ["Мои секреты тревожат маму. Надо следить, чтобы она не волновалась.", "chutkaya"], ["У меня может быть своё, и это уважают.", "opora"]]];
+const CONCL=[[["Надо слушаться, тогда не будут ругать.", "udobnaya"], ["Плакать нельзя. Надо быть сильной и справляться самой.", "silnaya"], ["Падать стыдно. Надо быть осторожной и всё делать правильно.", "otlichnitsa"], ["Мои слёзы никому не нужны. Лучше не показывать, что больно.", "nevidimka"], ["Когда мне плохо, маме ещё хуже. Надо следить за мамой.", "chutkaya"], ["Когда больно, можно попросить помощи, и ко мне придут.", "opora"]], [["Мои страхи утомляют маму. Нельзя быть обузой.", "udobnaya"], ["Я могу успокоить себя сама. Звать бесполезно.", "silnaya"], ["Бояться стыдно. Надо быть большой.", "otlichnitsa"], ["Мой страх – это глупости. Лучше молчать.", "nevidimka"], ["Надо сначала понять, не рассердится ли мама, если я позову.", "chutkaya"], ["Мои чувства имеют значение, я не одна.", "opora"]], [["Чужое желание важнее моего.", "udobnaya"], ["Если не хочу, надо как-то выкручиваться самой.", "silnaya"], ["Хорошую девочку видно по поведению.", "otlichnitsa"], ["Мои чувства смешные. Лучше их не показывать.", "nevidimka"], ["Надо смотреть на мамино лицо и делать, как нужно.", "chutkaya"], ["Моё «нет» слышат и уважают.", "opora"]], [["Надо рисовать то, что понравится маме.", "udobnaya"], ["Буду рисовать для себя. Показывать не обязательно.", "silnaya"], ["Хорошо – это когда без ошибок.", "otlichnitsa"], ["То, что важно мне, неважно другим.", "nevidimka"], ["Сначала надо понять, какое у мамы настроение.", "chutkaya"], ["Мне интересно, и я сама интересна.", "opora"]], [["Буду помогать с братом, тогда меня тоже будут любить.", "udobnaya"], ["Теперь я взрослая. Моё детство кончилось.", "silnaya"], ["Меня замечают, когда я полезная и хорошая.", "otlichnitsa"], ["Меня больше не видно.", "nevidimka"], ["Дома надо быть тихой и настороже.", "chutkaya"], ["У меня есть своё место, даже когда есть брат.", "opora"]], [["Злиться плохо. Хорошая девочка всегда довольна.", "udobnaya"], ["Мне нельзя быть маленькой. Справлюсь со злостью сама.", "silnaya"], ["Я старшая и должна вести себя правильно.", "otlichnitsa"], ["Со злостью я должна быть одна.", "nevidimka"], ["Злость показывать нельзя: будет страшно.", "chutkaya"], ["Злиться можно. Со злостью можно что-то делать.", "opora"]], [["Чтобы со мной дружили, надо всем угождать.", "udobnaya"], ["С трудностями я остаюсь одна.", "silnaya"], ["Если со мной не дружат, значит, я недостаточно хорошая.", "otlichnitsa"], ["Лучше не рассказывать. Всё равно ничего не изменится.", "nevidimka"], ["Мои проблемы ранят маму. Лучше её беречь.", "chutkaya"], ["Когда мне грустно, с этим можно прийти.", "opora"]], [["Мама грустит из-за меня. Надо её не расстраивать.", "udobnaya"], ["Это моё дело. Помощи не жди.", "silnaya"], ["Ошибаться нельзя. Любят только за хорошие оценки.", "otlichnitsa"], ["Лучше никому не показывать, если что-то не получается.", "nevidimka"], ["Надо всегда быть начеку.", "chutkaya"], ["Ошибаться не страшно. Мне помогут.", "opora"]], [["Если я ошибусь, меня перестанут любить.", "udobnaya"], ["Свои проблемы я решаю сама и молча.", "silnaya"], ["Ошибка – значит, я плохая.", "otlichnitsa"], ["Лучше бы меня вообще не замечали.", "nevidimka"], ["Лучше скрыть, чем гадать, что будет.", "chutkaya"], ["Ошибка – не конец. Меня любят и такой.", "opora"]], [["Я должна оправдывать ожидания.", "udobnaya"], ["Раз начала, дотяну сама, как бы ни было тяжело.", "silnaya"], ["Нельзя сдаваться, даже если плохо.", "otlichnitsa"], ["Мои желания никому не интересны.", "nevidimka"], ["Мамины чувства важнее моих слёз.", "chutkaya"], ["Моё «не хочу» можно обсудить.", "opora"]], [["От того, какая я, зависит, будет ли у нас семья.", "udobnaya"], ["Теперь я должна поддерживать маму.", "silnaya"], ["Если я буду очень хорошей, они перестанут ссориться.", "otlichnitsa"], ["О плохом не говорят. Буду делать вид, что всё нормально.", "nevidimka"], ["Опасность может быть в любую минуту.", "chutkaya"], ["Взрослые разберутся сами. Я не отвечаю за их отношения.", "opora"]], [["Чтобы всем было легче, я должна быть удобной.", "udobnaya"], ["Я должна быть опорой для взрослых.", "silnaya"], ["Надо хорошо учиться, чтобы маме было хоть чем-то радоваться.", "otlichnitsa"], ["О важном со мной не говорят. Моё волнение не в счёт.", "nevidimka"], ["Надо читать настроение и вовремя прятаться.", "chutkaya"], ["Правду можно выдержать, когда я не одна.", "opora"]], [["Мне нельзя иметь своё. Иначе мама обидится.", "udobnaya"], ["Мои проблемы подождут. Есть дела важнее.", "silnaya"], ["Чувства – это слабость. Дело важнее.", "otlichnitsa"], ["Меня всё равно никто не видит.", "nevidimka"], ["Нельзя плакать при маме: она будет переживать.", "chutkaya"], ["Даже когда мне плохо, я не одна.", "opora"]], [["Мечты надо отложить ради того, как правильно.", "udobnaya"], ["Во всём важном я сама.", "silnaya"], ["Быть просто собой мало. Надо быть лучшей.", "otlichnitsa"], ["То, что мне дорого, лучше прятать.", "nevidimka"], ["Сначала надо понять, как родители к этому отнесутся.", "chutkaya"], ["Моё желание важно. Меня поддержат.", "opora"]], [["Чтобы меня любили, надо подстраиваться.", "udobnaya"], ["Со своими чувствами я разберусь сама.", "silnaya"], ["Сначала дела, потом чувства.", "otlichnitsa"], ["Самое личное нельзя никому доверять.", "nevidimka"], ["Мои чувства могут вызвать бурю. Надо быть начеку.", "chutkaya"], ["Мои чувства – это хорошо. Ими можно делиться.", "opora"]], [["Хорошая девочка должна делиться.", "udobnaya"], ["Если я держусь за своё, я остаюсь одна.", "silnaya"], ["Другие лучше меня. Надо стараться стать хорошей.", "otlichnitsa"], ["Лучше ничего не хотеть, тогда не будет ссор.", "nevidimka"], ["Маме стыдно из-за меня. Что подумают люди?", "chutkaya"], ["Моё – это моё. Я могу решать сама.", "opora"]], [["Мир важнее правды. Извинюсь, даже если не виновата.", "udobnaya"], ["Я всегда отвечаю за всё одна.", "silnaya"], ["Старшая должна быть умнее. Надо вести себя идеально.", "otlichnitsa"], ["Объяснять бесполезно. Лучше промолчать.", "nevidimka"], ["Сначала надо понять, в каком настроении взрослые.", "chutkaya"], ["Меня выслушают. Справедливость бывает.", "opora"]], [["Чтобы не обижали, надо быть удобной.", "udobnaya"], ["Обиду надо проглотить и справиться самой.", "silnaya"], ["Чтобы меня не трогали, надо быть лучшей.", "otlichnitsa"], ["Лучше стать незаметной, тогда не будут дразнить.", "nevidimka"], ["Мои беды вызывают бурю. Лучше их скрывать.", "chutkaya"], ["Мне обидно, и с этим можно разобраться вместе.", "opora"]], [["Мир важнее моей обиды.", "udobnaya"], ["Доверять нельзя никому. Справляйся сама.", "silnaya"], ["Наверное, я сама виновата. Надо быть лучше.", "otlichnitsa"], ["Мои чувства – ерунда. Лучше их не показывать.", "nevidimka"], ["Надо следить, что взрослые сделают с моими чувствами.", "chutkaya"], ["Даже когда меня предали, мне есть к кому прийти.", "opora"]], [["Если мама против, лучше не хотеть.", "udobnaya"], ["Мои желания подождут, пока я нужна.", "silnaya"], ["Радость надо заслужить.", "otlichnitsa"], ["Мои дела никому не интересны.", "nevidimka"], ["Мир опасен. Надо всегда быть настороже.", "chutkaya"], ["Мои желания важны, и обо мне заботятся.", "opora"]], [["У меня не может быть своего.", "udobnaya"], ["Своё надо охранять самой и никого не пускать.", "silnaya"], ["Мои чувства ничего не стоят. Важны только успехи.", "otlichnitsa"], ["Самое личное надо прятать.", "nevidimka"], ["Мои секреты тревожат маму. Надо следить, чтобы она не волновалась.", "chutkaya"], ["У меня может быть своё, и это уважают.", "opora"]]];
 
 const SPHERES = {
   rel:{name:"Отношения", hint:"с мужем, подругой, мамой", intro:"У Ани есть муж, подруги, мама."},
   mom:{name:"Материнство", hint:"с дочкой и сыном", intro:"У Ани двое детей: дочка-дошкольница и сын-подросток."},
   work:{name:"Работа", hint:"с начальником и коллегами", intro:"Аня работает в офисе, у неё есть начальник и коллеги."},
-  mix:{name:"Всего понемногу", hint:"по две ситуации из каждой сферы", intro:"Аня замужем, она мама двоих детей и работает."}
+  mix:{name:"Разные сферы", hint:"по две ситуации из каждой сферы", intro:"Аня замужем, она мама двоих детей и работает."}
 };
 
 const ADULT_AGE = 32;
 let S;
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-const N_CHILD = 9, N_ADULT = 6;
+const N_CHILD = 7, N_ADULT = 6;
 const ofGroup = g => ADULT.map((a,k)=>a.group===g?k:-1).filter(k=>k>=0);
 /* Память: какие ситуации человек уже видел. При повторной игре сначала выпадают новые. */
 const SEEN_KEY="ktss-seen-v1";
@@ -900,7 +966,7 @@ function fresh(){
   const childIdx = perBand.concat(rest).sort((a,b)=>CHILD[a].age-CHILD[b].age || a-b);
   const order = childIdx.map(k => shuffle(CHILD[k].opts.map((_,i)=>i)));
   const corder = childIdx.map(() => shuffle([0,1,2,3,4,5]));
-  return {screen:"intro", i:0, pick:null, scores:{udobnaya:0,silnaya:0,otlichnitsa:0,nevidimka:0,chutkaya:0,opora:0}, newWays:0, adultPick:null, childIdx, adultIdx:[], sphere:null, order, corder, dec:null};
+  return {screen:"intro", i:0, pick:null, scores:{udobnaya:0,silnaya:0,otlichnitsa:0,nevidimka:0,chutkaya:0,opora:0}, newWays:0, adultPick:null, childIdx, adultIdx:[], sphere:null, order, corder, dec:null, decs:[], feels:[], liked:[]};
 }
 const C = i => CHILD[S.childIdx[i]];
 const A = i => ADULT[S.adultIdx[i]];
@@ -927,7 +993,7 @@ const SP_UI={
  rel:{t:"Отношения",h:"с мужем, подругой, мамой",c:"#F1DCC6"},
  mom:{t:"Материнство",h:"с дочкой и сыном",c:"#EEF5C4"},
  work:{t:"Работа",h:"с начальником и коллегами",c:"#E4D5EF"},
- mix:{t:"Всего понемногу",h:"по 2 ситуации из каждой категории",c:"#D3E8F4"}};
+ mix:{t:"Разные сферы",h:"по 2 ситуации из каждой сферы",c:"#D3E8F4"}};
 const KID_BLOBS=["#F3CBD0","#EEF5C4","#D3E8F4","#F1DCC6","#E4D5EF"];
 const GROUP_UI={rel:{c:"#F1DCC6"},mom:{c:"#EEF5C4"},work:{c:"#E4D5EF"}};
 const TYPE_COL={udobnaya:"#F3CBD0",silnaya:"#F1DCC6",otlichnitsa:"#E9DC8F",nevidimka:"#D3E8F4",chutkaya:"#E4D5EF",opora:"#CFDDA8"};
@@ -1026,6 +1092,43 @@ function drawArt(root){
  });
 }
 
+const FEELS=[["страх","страх","м"],["стыд","стыд","м"],["обида","обида","ж"],["злость","злость","ж"],["одиночество","одиночество","с"],["облегчение","облегчение","с"]];
+const FEEL_TEXT=[
+ "Страх появляется, когда рядом не хватает безопасности. Во взрослой жизни он может звучать как тревога, желание всё контролировать или не рисковать. Можно заметить: в каких ситуациях сейчас становится тревожно?",
+ "Стыд появляется, когда ребёнок решает, что с ним самим что-то не так. Во взрослой жизни он может звучать как «я недостаточно хорошая» или желание спрятаться. Можно заметить: где сейчас появляется это чувство и чей голос в нём слышен?",
+ "Обида появляется, когда очень нужно было другое отношение, а его не было. Во взрослой жизни она может молча копиться. Можно заметить: чего на самом деле хотелось в такие моменты?",
+ "Злость – здоровое чувство, она защищает границы. Если её нельзя было показывать, во взрослой жизни она может прятаться в усталости или вырываться неожиданно. Можно заметить: что сейчас важного для меня произошло? Какая у меня потребность?",
+ "Одиночество появляется, когда с чувствами приходится оставаться наедине. Во взрослой жизни оно может ощущаться даже рядом с близкими. Можно заметить: с кем сейчас можно разделить то, что внутри?",
+ "Облегчение появляется, когда рядом был кто-то, кто помог справиться. Это след опоры, которая была. Можно заметить: что даёт эту опору сейчас?"];
+const NEEDS={
+ udobnaya:"Чтобы любили, даже когда ребёнок неудобный, расстроен или говорит «нет».",
+ silnaya:"Чтобы рядом был взрослый, на которого можно опереться, и можно было побыть маленькой.",
+ otlichnitsa:"Чтобы любили просто так, а не за пятёрки, успехи и старания.",
+ nevidimka:"Чтобы замечали: интересовались тем, что ребёнок чувствует и чего хочет.",
+ chutkaya:"Безопасность и предсказуемость: чтобы взрослые сами справлялись со своими чувствами и за ними не нужно было следить.",
+ opora:"То, что во многом было: взрослые, которые замечали и оставались рядом. Это и стало опорой."};
+function eyerow(text,key){ const on=S.liked.includes(key);
+ return `<div class="eyerow"><div class="eyebrow">${text}</div><button class="heart${on?" on":""}" data-like="${key}" aria-pressed="${on}"><i>${on?"♥":"♡"}</i> Отозвалось</button></div>`; }
+function feelBlock(){
+ const cnt=[0,0,0,0,0,0]; (S.feels||[]).forEach(f=>{ if(f!=null) cnt[f]++; });
+ const mx=Math.max(...cnt); if(!mx) return "";
+ const top=FEELS.filter((_,k)=>cnt[k]===mx);
+ const verb = top.length>1 ? "звучали" : ({м:"звучал",ж:"звучала",с:"звучало"})[top[0][2]];
+ const names = top.map(x=>x[1]); const list = names.length>1 ? names.slice(0,-1).join(", ")+" и "+names[names.length-1] : names[0];
+ return `<div class="box pink"><div class="label">Чувства</div><p>Чаще всего в ответах ${verb} <b>${list}</b>.</p>${top.map(x=>`<p style="margin-top:10px">${FEEL_TEXT[FEELS.indexOf(x)]}</p>`).join("")}
+  <div class="fchips">${FEELS.map((x,k)=>cnt[k]?`<span>${x[0]} · ${cnt[k]}</span>`:"").join("")}</div></div>`;
+}
+function decBlock(){
+ const d=(S.decs||[]).filter(Boolean); if(!d.length) return "";
+ return `<div class="box lime"><div class="label">Выбранные выводы</div><ul class="declist">${d.map(x=>`<li>«${x.replace(/\.$/,"")}»</li>`).join("")}</ul></div>`;
+}
+function likedBlock(){
+ const L=(S.liked||[]); if(!L.length) return "";
+ const items=L.map(k=>{ const n=+k.slice(1);
+  if(k[0]==="c"){ const c=CHILD[S.childIdx[n]]; return c?c.text:"" }
+  const a=ADULT[S.adultIdx[n]]; return a?`${a.who}: ${a.title.replace(/^«|»$/g,"")}`:"" }).filter(Boolean);
+ return `<div class="box blue"><div class="label">Сцены, которые отозвались</div><ul class="declist">${items.map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+}
 function ages(idx, adult){
  const list = adult ? S.adultIdx.map((_,k)=>k+1) : S.childIdx.map(k=>CHILD[k].age).concat(idx>=S.childIdx.length?[ADULT_AGE]:[]);
  let h='<div class="ages" aria-label="'+(adult?'Взрослая жизнь':'Возраст Ани')+'">';
@@ -1047,8 +1150,9 @@ function render(){
   <section class="about">
    <h2>Об игре</h2>
    <p>Это игра-симулятор. Ты проживаешь детство девочки Ани: в каждой сцене выбираешь, как поступили взрослые, и понимаешь, какой вывод из этого могла сделать Аня.</p>
-   <p>Она вырастает, и ты видишь, как это проявляется в её взрослой жизни. В конце игры ты узнаешь её основной способ взаимодействовать с миром, который когда-то помогал, а сейчас иногда мешает.</p>
+   <p>Она вырастает, и ты видишь, как это проявляется в её взрослой жизни. В конце игры ты узнаешь её основной способ взаимодействовать с миром, который когда-то помогал. А сейчас?</p>
    <span class="tag">Игра займёт около 10 минут</span>
+   <p class="note" style="margin-top:10px">В игре есть сцены с криком и грубостью. Проходи в своём темпе и останавливайся, если станет тяжело.</p>
   </section>
   <section class="spheres" id="spheres">
    <h2>Где увидеть<br>взрослую Аню?</h2>
@@ -1075,7 +1179,7 @@ function render(){
  else if(S.screen==="child"){
   const c=C(S.i);
   h=`${TOP}${ages(S.i)}<div class="wrap fade">
-   <div class="eyebrow">Детство · ${S.i+1} из ${nC}</div>
+   ${eyerow(`Детство · ${S.i+1} из ${nC}`,"c"+S.i)}
    <svg class="art" data-art="kid" data-c="${KID_BLOBS[S.i%KID_BLOBS.length]}" viewBox="0 0 350 190" aria-hidden="true"></svg>
    <h3>${c.text}</h3>
    <p class="muted">Что делает взрослый?</p>
@@ -1085,7 +1189,7 @@ function render(){
  else if(S.screen==="childDecide"){
   const c=C(S.i), o=c.opts[S.pick], cs=CONCL[S.childIdx[S.i]];
   h=`${TOP}${ages(S.i)}<div class="wrap fade">
-   <div class="eyebrow">Детство · ${S.i+1} из ${nC}</div>
+   ${eyerow(`Детство · ${S.i+1} из ${nC}`,"c"+S.i)}
    <p class="muted">${c.text}</p>
    <div class="bubble">${o[0]}</div>
    <h3 style="margin-top:6px">Что могла решить маленькая Аня?</h3>
@@ -1093,19 +1197,16 @@ function render(){
    <div class="opts">${S.corder[S.i].map(j=>`<button class="opt" data-d="${j}">«${cs[j][0].replace(/\.$/,"")}»</button>`).join("")}</div>
   </div>`;
  }
- else if(S.screen==="childReveal"){
-  const c=C(S.i), o=c.opts[S.pick], dec=CONCL[S.childIdx[S.i]][S.dec][0];
+ else if(S.screen==="childFeel"){
+  const c=C(S.i), o=c.opts[S.pick], dec=CONCL[S.childIdx[S.i]][S.dec][0], f=S.feels[S.i];
   h=`${TOP}${ages(S.i)}<div class="wrap fade">
-   <div class="eyebrow">Детство · ${S.i+1} из ${nC}</div>
+   ${eyerow(`Детство · ${S.i+1} из ${nC}`,"c"+S.i)}
    <p class="muted">${c.text}</p>
    <div class="bubble">${o[0]}</div>
-   <div class="decision">
-    <svg class="bg" viewBox="0 0 350 260" preserveAspectRatio="none" aria-hidden="true"><path d="M40 14 C140 -4 290 4 330 40 C356 90 352 190 320 230 C260 268 90 262 34 232 C2 190 -2 70 40 14Z" fill="${KID_BLOBS[S.i%KID_BLOBS.length]}"/></svg>
-    <svg class="art" data-art="kidsmall" viewBox="0 0 350 120" aria-hidden="true"></svg>
-    <div class="label" style="color:var(--ink)">Аня решила</div>
-    <div class="q">«${dec.replace(/\.$/,"")}»</div>
-   </div>
-   <button class="btn" id="next">${S.i<nC-1?"Аня растёт дальше":"Аня выросла"}</button>
+   <div class="box pink"><div class="label">Аня решила</div><p>«${dec.replace(/\.$/,"")}»</p></div>
+   <h3 style="margin-top:4px">Что почувствовала Аня?</h3>
+   <div class="feels">${FEELS.map((x,k)=>`<button class="feel${f===k?" on":""}" data-f="${k}">${x[0]}</button>`).join("")}</div>
+   <button class="btn" id="next"${f==null?" disabled":""}>${S.i<nC-1?"Аня растёт дальше":"Аня выросла"}</button>
   </div>`;
  }
  else if(S.screen==="interlude"){
@@ -1124,7 +1225,7 @@ function render(){
  else if(S.screen==="adult"){
   const a=A(S.i), t=mainType(), v=a.by[t], op=t==="opora";
   h=`${TOP}${ages(S.i,true)}<div class="wrap fade">
-   <div class="eyebrow">Взрослая жизнь · ${S.i+1} из ${nA}</div>
+   ${eyerow(`Взрослая жизнь · ${S.i+1} из ${nA}`,"a"+S.i)}
    <svg class="art" data-art="adult" data-c="${GROUP_UI[a.group].c}" viewBox="0 0 350 190" aria-hidden="true"></svg>
    <span class="pill" style="background:${GROUP_UI[a.group].c}">${a.who}</span>
    <h2>${a.title}</h2>
@@ -1139,7 +1240,7 @@ function render(){
   const mainL = nw ? (op?"Когда Аня срывается":"Аня пробует новый способ") : "Что происходит дальше";
   const otherL = nw ? (op?"А когда есть силы":"А если привычный способ") : (op?"А если Аня сорвётся":"А если новый способ");
   h=`${TOP}${ages(S.i,true)}<div class="wrap fade">
-   <div class="eyebrow">Взрослая жизнь · ${S.i+1} из ${nA}</div>
+   ${eyerow(`Взрослая жизнь · ${S.i+1} из ${nA}`,"a"+S.i)}
    <span class="pill" style="background:${GROUP_UI[a.group].c}">${a.who}</span>
    <h2>${a.title}</h2>
    <p class="muted">${a.text}</p>
@@ -1154,35 +1255,40 @@ function render(){
   const second=r[1][1]>0 && r[1][0]!=="opora" && !op ? TYPES[r[1][0]] : null;
   const max=Math.max(...r.map(x=>x[1]),1);
   h=`${TOP}<div class="wrap fade" style="margin-top:18px">
-   <div class="eyebrow">Как Аня стала собой</div>
+   <div class="eyebrow">Итог игры</div>
    <svg class="art" data-art="both" viewBox="0 0 350 190" aria-hidden="true"></svg>
   </div>
   <div class="res fade">
-   <div class="kick">Её основной способ взаимодействовать с миром</div>
+   <div class="kick">Основной способ взаимодействовать с миром</div>
    <h2>«${t.name}»</h2>
    <div class="sub">${t.short}</div>
    <p>${t.formed}</p>
+   <div class="label">Что было нужно на самом деле</div>
+   <p>${NEEDS[r[0][0]]}</p>
    <div class="label">Во взрослой жизни</div>
    <ul>${t.adult.map(x=>`<li>${x}</li>`).join("")}</ul>
    <div class="label">Вопрос, который стоит задавать себе</div>
-   <p>Когда ${t.when}, остановись и спроси себя:</p>
+   <p>Когда ${t.when}, можно остановиться и спросить себя:</p>
    <div class="bubble" style="margin-top:12px">${t.q}</div>
-   <p class="small" style="margin-top:14px;opacity:.9">${op?"Чем чаще задаёшь себе этот вопрос, тем легче возвращаться к себе.":"Так у привычного способа появляется пауза, а у тебя – выбор."}</p>
+   <p class="small" style="margin-top:14px;opacity:.9">${op?"Чем чаще задаёшь себе этот вопрос, тем легче возвращаться к себе.":"Так у привычного способа появляется пауза, а вместе с ней – выбор."}</p>
    <div class="sign"><span>игра «Как ты стала собой»</span>${NICK}</div>
   </div>
   <div class="wrap" style="margin-top:20px">
    <button class="btn" id="share">Поделиться результатом</button>
    <p class="note center" style="margin-top:-6px">Картинка для сторис и ссылка на игру</p>
-   ${second?`<p>А ещё в истории Ани заметен способ «${second.name}»: ${second.short}. Обычно их несколько, и они переплетаются.</p>`:""}
-   <div class="label" style="margin-top:6px">Из чего сложилась история Ани</div>
+   ${feelBlock()}
+   ${decBlock()}
+   ${likedBlock()}
+   ${second?`<p>А ещё в истории заметен способ «${second.name}»: ${second.short}. Обычно их несколько, и они переплетаются.</p>`:""}
+   <div class="label" style="margin-top:6px">Из чего сложилась история</div>
    <div class="bars">${r.map((x,k)=>`<div class="bar ${k===0?"top":""}"><span>${TYPES[x[0]].name}</span><span class="t"><i style="width:${x[1]/max*100}%;background:${k===0?"#73A886":TYPE_COL[x[0]]}"></i></span><span>${x[1]}</span></div>`).join("")}</div>
-   <p>${op?`Во взрослой жизни ты ${S.newWays} ${plural(S.newWays,"раз","раза","раз")} из ${nA} посмотрела, как Аня срывается и возвращается к себе. Опора – это не идеальность, а умение возвращаться к себе.`:(S.newWays===0?"Во взрослой жизни Аня ни разу не попробовала новый способ. Так бывает: привычный способ кажется единственным.":`Во взрослой жизни Аня ${S.newWays} ${plural(S.newWays,"раз","раза","раз")} из ${nA} попробовала новый способ. Каждый такой раз – маленький шаг к себе.`)}</p>
+   <p>${op?`Во взрослой жизни ${S.newWays} ${plural(S.newWays,"раз","раза","раз")} из ${nA} была выбрана сцена, где опора теряется и снова возвращается. Опора – это не идеальность, а умение возвращаться к себе.`:(S.newWays===0?"Во взрослой жизни новый способ не был выбран ни разу. Так бывает: привычный способ кажется единственным.":`Во взрослой жизни новый способ был выбран ${S.newWays} ${plural(S.newWays,"раз","раза","раз")} из ${nA}. Каждый такой раз – маленький шаг к себе.`)}</p>
    <div class="box blue">
     <div class="label">Что это значит</div>
     <p class="small">Это способ, которым ребёнок справлялся с тем, что было вокруг, чтобы сохранить любовь и безопасность. Когда-то он помогал. Но ребёнок вырастает, а способ остаётся прежним, и иногда во взрослой жизни он уже мешает.</p>
     <p class="small" style="margin-top:8px">Заметить свой способ – уже много. С этим часто и приходят в терапию: чтобы появился выбор там, где раньше был только автомат.</p>
    </div>
-   <div class="cta"><b>Узнала в Ане себя?</b>
+   <div class="cta"><b>Узнала в этой истории себя?</b>
     <p class="small">Здесь можно продолжить:</p>
     <div class="links">
      <a class="lk" href="${IG}" target="_blank" rel="noopener"><span>Instagram ${NICK}</span><small>путь в психологию: шаг за шагом</small></a>
@@ -1216,18 +1322,28 @@ function bind(){
   S.pick=+b.dataset.k; S.scores[C(S.i).opts[S.pick][1]]+=1; S.screen="childDecide"; render();
  }));
  app.querySelectorAll(".opt[data-d]").forEach(b=>b.addEventListener("click",()=>{
-  S.dec=+b.dataset.d; S.scores[CONCL[S.childIdx[S.i]][S.dec][1]]+=2; S.screen="childReveal"; render();
+  S.dec=+b.dataset.d; S.scores[CONCL[S.childIdx[S.i]][S.dec][1]]+=2; S.decs[S.i]=CONCL[S.childIdx[S.i]][S.dec][0]; S.screen="childFeel"; render();
  }));
  app.querySelectorAll("[data-a]").forEach(b=>b.addEventListener("click",()=>{
   S.adultPick=b.dataset.a; if(S.adultPick==="new") S.newWays++; S.screen="adultReveal"; render();
  }));
  $("#next")?.addEventListener("click",()=>{
-  if(S.screen==="childReveal"){ if(S.i<S.childIdx.length-1){S.i++;S.screen="child"} else {S.screen="interlude"} }
+  if(S.screen==="childFeel"){ if(S.feels[S.i]==null) return; if(S.i<S.childIdx.length-1){S.i++;S.screen="child"} else {S.screen="interlude"} }
   else if(S.screen==="interlude"){ S.i=0; S.screen="adult" }
   else if(S.screen==="adultReveal"){ if(S.i<S.adultIdx.length-1){S.i++;S.screen="adult"} else {S.screen="result"} }
   render();
  });
  $("#again")?.addEventListener("click",()=>{clearState();S=fresh();render()});
+ app.querySelectorAll("[data-f]").forEach(b=>b.addEventListener("click",()=>{
+  S.feels[S.i]=+b.dataset.f; app.querySelectorAll("[data-f]").forEach(x=>x.classList.toggle("on",x===b));
+  const n=$("#next"); if(n) n.disabled=false; saveState();
+ }));
+ app.querySelectorAll("[data-like]").forEach(b=>b.addEventListener("click",()=>{
+  const k=b.dataset.like, on=!S.liked.includes(k);
+  S.liked = on ? S.liked.concat(k) : S.liked.filter(x=>x!==k);
+  b.classList.toggle("on",on); b.setAttribute("aria-pressed",on); b.querySelector("i").textContent=on?"♥":"♡"; saveState();
+  if(on) goal("liked",{scene:k});
+ }));
 }
 
 
@@ -1246,7 +1362,7 @@ let lastHit="";
 function track(){
  if(!METRIKA_ON) return;
  const nC=S.childIdx.length;
- const map={intro:["start","Главная"],child:[`child-${S.i+1}`,`Детство ${S.i+1} из ${nC}`],childDecide:[`child-${S.i+1}-reshenie`,`Что решила Аня ${S.i+1} из ${nC}`],childReveal:[`child-${S.i+1}-vyvod`,`Вывод ${S.i+1} из ${nC}`],
+ const map={intro:["start","Главная"],child:[`child-${S.i+1}`,`Детство ${S.i+1} из ${nC}`],childDecide:[`child-${S.i+1}-reshenie`,`Что решила Аня ${S.i+1} из ${nC}`],childFeel:[`child-${S.i+1}-chuvstvo`,`Чувство ${S.i+1} из ${nC}`],
   interlude:["vyrosla","Аня выросла"],adult:[`adult-${S.i+1}`,`Взрослая ${S.i+1} из 6`],adultReveal:[`adult-${S.i+1}-itog`,`Взрослая ${S.i+1}: что вышло`],result:["result","Итог"]};
  const [slug,title]=map[S.screen]||[S.screen,S.screen];
  if(slug===lastHit) return; lastHit=slug;
@@ -1255,7 +1371,7 @@ function track(){
 function goal(name,params){ if(METRIKA_ON){ try{ ym(METRIKA_ID,"reachGoal",name,params||{}); }catch(e){} } }
 
 /* --- сохранение прогресса: можно закрыть вкладку и вернуться --- */
-const SAVE_KEY="ktss-game-v2";
+const SAVE_KEY="ktss-game-v3";
 function saveState(){ try{ if(S.screen!=="intro") localStorage.setItem(SAVE_KEY,JSON.stringify(S)); }catch(e){} }
 function loadState(){ try{ const v=JSON.parse(localStorage.getItem(SAVE_KEY)); if(v&&Array.isArray(v.childIdx)&&Array.isArray(v.adultIdx)&&v.screen&&v.screen!=="intro") return v; }catch(e){} return null; }
 function clearState(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
@@ -1294,7 +1410,7 @@ async function makeStory(){
  const top=770; x.fillStyle="#73A886";x.fillRect(0,top,W,H-top);
  let y=top+90;
  x.fillStyle="#E4EFB6";x.font="600 30px Manrope";
- for(const l of wrapLines(x,"ЕЁ ОСНОВНОЙ СПОСОБ ВЗАИМОДЕЙСТВОВАТЬ С МИРОМ",900)){x.fillText(l,90,y);y+=44}
+ for(const l of wrapLines(x,"ОСНОВНОЙ СПОСОБ ВЗАИМОДЕЙСТВОВАТЬ С МИРОМ",900)){x.fillText(l,90,y);y+=44}
  y+=70; x.fillStyle="#FFFFFF";x.font="700 92px Manrope";
  for(const l of wrapLines(x,"«"+t.name+"»",900)){x.fillText(l,90,y);y+=100}
  y+=6; x.fillStyle="#E4EFB6";x.font="600 46px Manrope";x.fillText(t.short,90,y);y+=74;
